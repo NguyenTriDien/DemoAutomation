@@ -1,7 +1,6 @@
 package browsers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import net.bytebuddy.asm.Advice;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,18 +11,16 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.v85.performance.Performance;
 import org.openqa.selenium.devtools.v85.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.math.BigDecimal;
-import java.sql.Driver;
+
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.Thread.sleep;
 
@@ -88,11 +85,11 @@ public class ChromeBrowser {
         Customer.sendKeys("0913506225");
         action.sendKeys(Keys.ENTER);
         action.perform();
-        WebElement Cgtv = driver.findElement(By.xpath("//*[@id=\"inputSelectSalesman\"]"));
+        WebElement  Cgtv = driver.findElement(By.xpath("//*[@id=\"inputSelectSalesman\"]"));
         Cgtv.click();
-        WebElement Input_Saleman = driver.findElement(By.id("inputSelectSalesman"));
+        WebElement input_Saleman = driver.findElement(By.id("inputSelectSalesman"));
         Thread.sleep(1000);
-        Input_Saleman.sendKeys("YD13116");
+        input_Saleman.sendKeys("YD13116");
         Thread.sleep(1000);
         action.sendKeys(Keys.ENTER);
         action.perform();
@@ -116,12 +113,16 @@ public class ChromeBrowser {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
-        driver.get("https://unicorn.yody.io/admin/stores/303");
+        driver.get("https://uat.unicorn.yody.io/admin");
         driver.manage().window().maximize();
         driver.findElement(By.id("username")).sendKeys("YD190598");
         driver.findElement(By.id("password")).sendKeys("19051998");
         driver.findElement(By.xpath("//button[@type='submit']")).click();
-        driver.findElement(By.className("adsd"));
+        sleep(2000);
+        driver.findElement(By.xpath("//*[@id=\"root\"]/section/section/aside/div/div/div[1]/ul/li[1]/span")).isDisplayed();
+        driver.quit();
+
+//        driver.findElement(By.className("adsd"));
 //        WebElement username = driver.findElement(By.id("username"));
 //        username.sendKeys("yd190598");
 //        WebElement password = driver.findElement(By.id("password"));
@@ -182,4 +183,17 @@ public class ChromeBrowser {
 //            System.out.printf(String.valueOf(m));
 //
 //        }
-}}
+}
+    //@BeforeMethod
+    @Test
+    //Chạy test case này trước sau đó mới chạy test case khác
+    void logIn(){
+    Assert.assertEquals(2,2,"oẳng rồi anh em ơi");
+    }
+    @AfterMethod
+    //Chạy test case này sau khi kết thúc một test case khác
+    void logOut(){
+
+    }
+    //
+   }
