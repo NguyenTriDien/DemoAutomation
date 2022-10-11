@@ -43,4 +43,6 @@ public class LoginTest {
         Assert.assertTrue(checkBox2.isSelected(),"Checkbox2 chưa được click");
 
     }
+
+    
 }
