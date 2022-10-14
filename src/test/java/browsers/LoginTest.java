@@ -14,7 +14,11 @@ import org.testng.annotations.Test;
 
 import javax.swing.*;
 import java.sql.Driver;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class LoginTest {
     @Test 
@@ -129,6 +133,25 @@ public class LoginTest {
         }
         WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+index+"]/td[2]"));
         Assert.assertEquals(name.getText(),"Jason");
+        /**
+         * Cách get ra giá trị của Findlements và replace sau đó chuyển từ String qua double để tìm phần tử lớn nhất
+         */
+
+        List<Double> dues = driver.findElements(By.xpath("//table[@id='table1']/tbody/tr/td[4]"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList())
+                .stream()
+                .map(s -> s.replace("$",""))
+                        .collect(Collectors.toList())
+                .stream()
+                .map(Double::valueOf)
+                .collect(Collectors.toList());
+          Double maxValue = Collections.max(dues);// Tìm giá trị lớn nhất của mảng
+          int maxValueIndex = dues.indexOf(maxValue);//Tìm vị trí của giá trị lớn nhất của mảng
+        System.out.println(maxValueIndex);
+        System.out.println(maxValue);
+
 //          for(int numberOfCol=1; numberOfCol <=5; numberOfCol++)
 //         {
 //              System.out.print(driver.findElement(By.xpath("//table[@id='table1']/thead/tr/th["+numberOfCol+"]/span")).getText() +"\t");
@@ -139,7 +162,7 @@ public class LoginTest {
 //                  System.out.print(driver.findElement(By.xpath("//table[@id='table1']/tbody/tr[" + numberOfvalue + "]/td[" + numberOfrow + "]")).getText() + "\t");
 //              }
 //              System.out.println("\n");
-//          }
+//
         driver.quit();
     }}
 //        System.out.println(driver.findElement(By.xpath("//*[@id='table1']/tbody/tr[1]")).getText() +"\t\"");
