@@ -14,11 +14,13 @@ import org.testng.annotations.Test;
 
 import javax.swing.*;
 import java.sql.Driver;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LoginTest {
     @Test 
@@ -131,7 +133,7 @@ public class LoginTest {
             index = a+1;
             }
         }
-        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+index+"]/td[2]"));
+        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+(index+1)+"]/td[2]"));
         Assert.assertEquals(name.getText(),"Jason");
         /**
          * Cách get ra giá trị của Findlements và replace sau đó chuyển từ String qua double để tìm phần tử lớn nhất
@@ -142,13 +144,15 @@ public class LoginTest {
                 .map(WebElement::getText)
                 .collect(Collectors.toList())
                 .stream()
-                .map(s -> s.replace("$",""))
-                        .collect(Collectors.toList())
+                .map(s -> s.replace("$", ""))
+                .collect(Collectors.toList())
                 .stream()
                 .map(Double::valueOf)
                 .collect(Collectors.toList());
           Double maxValue = Collections.max(dues);// Tìm giá trị lớn nhất của mảng
           int maxValueIndex = dues.indexOf(maxValue);//Tìm vị trí của giá trị lớn nhất của mảng
+        Double sumValue = dues.parallelStream().reduce((double) 0, Double::sum); // Tinh tổng các phần tử trong mảng
+        System.out.println(sumValue);
         System.out.println(maxValueIndex);
         System.out.println(maxValue);
 
@@ -163,8 +167,22 @@ public class LoginTest {
 //              }
 //              System.out.println("\n");
 //
-        driver.quit();
-    }}
+
+    }
+    @Test
+    void max(){
+//        List<Integer>  n =  new ArrayList<Integer>();
+//        n.add(0,12);
+//        System.out.println(Collections.max(n));
+        List<Double> items = new ArrayList<Double>();
+        items.add(2.4);
+        items.add(1.0);
+        Double sumValue = items.parallelStream().reduce((double) 0, Double::sum);
+        System.out.println(sumValue);// Tinh tổng các phần tử trong mảng
+        Stream<Double> stream = items.stream();
+        System.out.println(stream);
+    }
+}
 //        System.out.println(driver.findElement(By.xpath("//*[@id='table1']/tbody/tr[1]")).getText() +"\t\"");
 //        for(int numberOfrow = 1; numberOfrow <=4; numberOfrow++ ){
 //                    int valueOfrow = 1;
