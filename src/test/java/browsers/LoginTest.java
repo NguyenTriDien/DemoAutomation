@@ -133,7 +133,7 @@ public class LoginTest {
             index = a+1;
             }
         }
-        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+(index+1)+"]/td[2]"));
+        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+(index+1-1)+"]/td[2]"));
         Assert.assertEquals(name.getText(),"Jason");
         /**
          * Cách get ra giá trị của Findlements và replace sau đó chuyển từ String qua double để tìm phần tử lớn nhất
