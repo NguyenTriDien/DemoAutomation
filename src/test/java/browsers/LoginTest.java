@@ -111,7 +111,6 @@ public class LoginTest {
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
         driver.get("https://the-internet.herokuapp.com/tables");
-        WebElement table1 = driver.findElement(By.ByXPath.id("table1"));
         int[] due = new int[4];
         int j = 0;
         int index = 0;
