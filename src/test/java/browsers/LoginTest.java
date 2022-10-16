@@ -8,22 +8,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.devtools.v85.memory.Memory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.swing.*;
 import java.sql.Driver;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LoginTest {
-    @Test 
+    @Test
     void validCredentials() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -130,11 +128,11 @@ public class LoginTest {
         for (a = 0; a < due.length; a++) {
             if (due[a] > max) {
                 max = due[a];
-            index = a+1;
+                index = a + 1;
             }
         }
-        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr["+(index+1-1)+"]/td[2]"));
-        Assert.assertEquals(name.getText(),"Jason");
+        WebElement name = driver.findElement(By.xpath("//table[@id='table1']/tbody/tr[" + (index + 1 - 1) + "]/td[2]"));
+        Assert.assertEquals(name.getText(), "Jason");
         /**
          * Cách get ra giá trị của Findlements và replace sau đó chuyển từ String qua double để tìm phần tử lớn nhất
          */
@@ -149,26 +147,41 @@ public class LoginTest {
                 .stream()
                 .map(Double::valueOf)
                 .collect(Collectors.toList());
-          Double maxValue = Collections.max(dues);// Tìm giá trị lớn nhất của mảng
-          int maxValueIndex = dues.indexOf(maxValue);//Tìm vị trí của giá trị lớn nhất của mảng
-        Double sumValue = dues.parallelStream().reduce((double) 0, Double::sum); // Tinh tổng các phần tử trong mảng
-        System.out.println(sumValue);
-        System.out.println(maxValueIndex);
-        System.out.println(maxValue);
-
-//          for(int numberOfCol=1; numberOfCol <=5; numberOfCol++)
-//         {
-//              System.out.print(driver.findElement(By.xpath("//table[@id='table1']/thead/tr/th["+numberOfCol+"]/span")).getText() +"\t");
-//              }
-//        System.out.println("\n");
-//          for(int numberOfvalue = 1;numberOfvalue <= 4;numberOfvalue ++) {
-//              for (int numberOfrow = 1; numberOfrow <= 5; numberOfrow++) {
-//                  System.out.print(driver.findElement(By.xpath("//table[@id='table1']/tbody/tr[" + numberOfvalue + "]/td[" + numberOfrow + "]")).getText() + "\t");
-//              }
-//              System.out.println("\n");
-//
-
+        Double maxValue = Collections.max(dues);// Tìm giá trị lớn nhất của mảng
+        int maxValueIndex = dues.indexOf(maxValue);//Tìm vị trí của giá trị lớn nhất của mảng
+        Double minValue = Collections.min(dues);
+        /**
+         * Tìm list người có Dues nhỏ nhất
+        */
+        List<Integer> listMinDuesIndex = new ArrayList<>();
+        List<String> smallestDuePersons = new ArrayList<>();// Khai báo 1 mảng lưu trữ danh sách người có dues nhỏ nhất
+        for (int q = 0; q < dues.size(); q++) {
+            if (minValue.equals(dues.get(q)))// Vì đây là kiểu list nên phải dùng so sánh Equals chứ k dùng được ==
+            {
+                listMinDuesIndex.add(q);//Gắn vào mảng
+                 String minDueFirstNamePerson =  driver.findElement(By.xpath(String.format("//table[@id='table1']/tbody/tr[%d]/td[2]", q+1))).getText();//locator
+                 String minDueLastNamePerson =  driver.findElement(By.xpath(String.format("//table[@id='table1']/tbody/tr[%d]/td[1]", q+1))).getText();//locator
+                 smallestDuePersons.add(String.format("%s %s",minDueLastNamePerson,minDueFirstNamePerson));//Addd vào mảng danh sách người có dues nhỏ nhất
+        }}
+        Assert.assertEquals(smallestDuePersons,Arrays.asList("Smith John","Conway Tim"));// So sánh một mảng với một danh sách có sẵn.Arrays.asList có nghĩa là nhóm thành một list
     }
+    /**
+        for (Integer e:listMinDuesIndex){
+            System.out.println("dãy số e là " +e);
+        }// In ra các phần tử của mảng dùng foreach
+        System.out.println(dues.get(1));}
+                  for(int numberOfCol=1; numberOfCol <=5; numberOfCol++)
+         {
+              System.out.print(driver.findElement(By.xpath("//table[@id='table1']/thead/tr/th["+numberOfCol+"]/span")).getText() +"\t");
+              }
+        System.out.println("\n");
+          for(int numberOfvalue = 1;numberOfvalue <= 4;numberOfvalue ++) {
+              for (int numberOfrow = 1; numberOfrow <= 5; numberOfrow++) {
+                  System.out.print(driver.findElement(By.xpath("//table[@id='table1']/tbody/tr[" + numberOfvalue + "]/td[" + numberOfrow + "]")).getText() + "\t");
+              }
+              System.out.println("\n");
+     */
+
     @Test
     void max(){
 //        List<Integer>  n =  new ArrayList<Integer>();
@@ -181,6 +194,7 @@ public class LoginTest {
         System.out.println(sumValue);// Tinh tổng các phần tử trong mảng
         Stream<Double> stream = items.stream();
         System.out.println(stream);
+
     }
 }
 //        System.out.println(driver.findElement(By.xpath("//*[@id='table1']/tbody/tr[1]")).getText() +"\t\"");
