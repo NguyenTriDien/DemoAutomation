@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
@@ -16,11 +17,12 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class TableTest {
+    WebDriver driver;
     @Test
     void getPersonWhoHasMaxOfDue() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
         driver.get("https://the-internet.herokuapp.com/tables");
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='table1']/tbody/tr"));
 
@@ -49,5 +51,9 @@ public class TableTest {
         BigDecimal due = BigDecimal.valueOf(Double.parseDouble(element.findElements(By.tagName("td")).get(3).getText().trim().replace("$", "")));
         String website = element.findElements(By.tagName("td")).get(4).getText();
         return new Person(firstname, lastName, email,due, website);
+    }
+    @AfterClass(alwaysRun = true)
+    void teaDown(){
+    driver.quit();
     }
 }
