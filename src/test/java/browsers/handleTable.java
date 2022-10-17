@@ -19,7 +19,7 @@ public class handleTable {
     WebDriver driver;
     List<Double> dues;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
@@ -61,10 +61,9 @@ public class handleTable {
             }
         }
         Assert.assertEquals(smallestDuePersons, Arrays.asList("Smith John", "Conway Tim"));// Tạo một mảng và add 2 phần tử vào
-        Assert.assertEquals("smallestDuePersons","minDueFirstNamePerson");
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     void tearDown() {
         driver.quit();
     }
