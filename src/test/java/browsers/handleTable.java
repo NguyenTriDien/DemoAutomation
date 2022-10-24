@@ -35,17 +35,22 @@ public class handleTable {
                 .collect(Collectors.toList())
                 .stream()
                 .map(Double::valueOf)
+                .collect(Collectors.toList())
+                .stream()
+                .sorted()
                 .collect(Collectors.toList());
+
     }
 
     @Test
     void verifyLargestDuePerSonInTable1() {
+        System.out.println(dues);
         Double maxValue = Collections.max(dues);// Tìm giá trị lớn nhất của mảng
         int maxDueIndex = dues.indexOf(maxValue);//Tìm vị trí của giá trị lớn nhất của mảng
         String maxDueFirstnamePerson = driver.findElement(By.xpath(String.format("//table[@id='table1']/tbody/tr[%d]/td[2]", maxDueIndex + 1))).getText();
         String maxDueLastnamePerson = driver.findElement(By.xpath(String.format("//table[@id='table1']/tbody/tr[%d]/td[1]", maxDueIndex + 1))).getText();
 
-        Assert.assertEquals(String.format("%s %s", maxDueLastnamePerson, maxDueFirstnamePerson), "Doe Jason");
+        Assert.assertEquals(String.format("%s %s", maxDueLastnamePerson, maxDueFirstnamePerson), "Jason");
     }
 
 
