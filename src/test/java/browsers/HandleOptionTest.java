@@ -71,6 +71,7 @@ public class LoginTest {
         Select selectObject = new Select(selectOption);
         selectObject.selectByValue("1");
 
+
         /**
          * Có thể dùng 2 cách này để chọn value
          * selectObject.selectByVisibleText("Option 1");
@@ -78,7 +79,7 @@ public class LoginTest {
          */
         WebElement option1 = driver.findElement(By.xpath("//*[@value='1'and@selected='selected']"));
         Assert.assertEquals(option1.getAttribute("value"),"1");
-        driver.quit();
+        //driver.quit();
         /**Chỉ áp dụng được với dropdown có dạng
          <select id="dropdown">
             <option value="" disabled="disabled" selected="selected">Please select an option</option>
