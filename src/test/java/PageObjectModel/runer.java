@@ -33,7 +33,7 @@ public class runer {
     }
 
     @AfterClass(alwaysRun = true)
-    void teadown() {
+    void teardown() {
         driver.quit();
     }
 

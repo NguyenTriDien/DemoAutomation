@@ -49,6 +49,9 @@ public class phptravels {
         Assert.assertEquals(placeholderPassword, passwordPlaceholder);
     }
 
+    public void clickRemember(){
+        
+    }
 }
 
 
