@@ -25,6 +25,7 @@ public class runer {
         phptravels.fillForm("user@phptravels.com", "demouser");
         phptravels.clickButtonLogin();
         phptravels.verifyLoginSuccess("Hi, Demo Welcome Back");
+        phptravels.verifyLoginSuccess("Hi, Demo Welcome Back");
     }
 
     @Test
