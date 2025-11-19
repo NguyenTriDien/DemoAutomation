@@ -73,60 +73,85 @@ Cloud LB: AWS ALB, Azure LB.
 “Service API chính là trái tim của hệ thống – nơi mọi nghiệp vụ được xử lý. Nếu trái tim khỏe, toàn bộ hệ thống vận hành trơn tru. Nếu trái tim yếu, mọi thành phần khác đều bị ảnh hưởng.”
 
 ⚙️ Các thành phần chính
-Business Logic (Logic nghiệp vụ):
-
++ Business Logic (Logic nghiệp vụ):
 Đây là phần “não bộ” của Service API.
-
 Ví dụ: xử lý thanh toán, đăng ký tài khoản, quản lý sản phẩm, tính phí vận chuyển.
-
 Nếu logic viết không tối ưu (ví dụ vòng lặp thừa, gọi DB nhiều lần), hiệu năng sẽ giảm mạnh.
+--> 90% issue t? function và nfc s? g?p ? dây
 
-Data Access Layer (Truy cập dữ liệu):
-
++ Data Access Layer (Truy cập dữ liệu):
 Service API thường phải đọc/ghi dữ liệu từ Database.
 
-Ví dụ: MySQL/PostgreSQL cho dữ liệu giao dịch, MongoDB cho dữ liệu phi cấu trúc.
-
-Performance tester cần kiểm tra tốc độ query, số lượng connection, và tối ưu index.
-
-Caching (Bộ nhớ đệm):
-
-Redis/Memcached giúp giảm tải cho DB bằng cách lưu dữ liệu tạm thời.
-
-Ví dụ: thông tin sản phẩm hot được cache để trả về nhanh hơn.
-
++ Caching (Bộ nhớ đệm):
+Ví dụ: Chúng ta c?n api get ra danh sách 10 s?n ph?m hot(Bán ch?y) trong tháng:
+Ch? này mu?n thông kê du?c thì api ph?i g?i vào database. Lúc này câu query du?c s? d?ng có th? là
+SELECT 
+    product AS name, 
+    SUM(quantity) AS total_quantity
+FROM orders
+WHERE created_date BETWEEN '2025-11-01' AND '2025-11-30'
+GROUP BY product
+ORDER BY total_quantity DESC
+LIMIT 10;
+--> Query này m?t 2s d? th?ng kê ch?ng h?n
+-> M?i l?n g?i api thì công vi?c này s? du?c lap di l?p lai. 
+V?y có cách nào d? t?i uu d? api nhanh hon không.
+--> Cache(Caching): 
+L?n 1: G?i api ->Tìm trong cache(redis) ->Ko-> query database -> cache l?i (luu vào redis) -> Tr? ra cho client
+Lan 2: G?i api -> Tìm trong cache(redis) -> OK -> Tr? ra luôn cho client
+-> Thông tin sản phẩm hot được cache để trả về nhanh hơn.
 Nếu không có cache, mỗi request đều phải truy vấn DB → chậm.
 
-Communication (Giao tiếp):
-
++ Communication (Giao tiếp):
 Service API có thể giao tiếp với service khác qua REST, gRPC, hoặc message queue (Kafka, RabbitMQ).
 
-Performance tester cần kiểm tra độ trễ khi gọi service khác, đặc biệt trong kiến trúc microservices.
-
-Observability (Khả năng quan sát):
-
++ Observability (Khả năng quan sát):
 Monitoring: Prometheus + Grafana.
-
 Logging: ELK Stack.
-
 Tracing: Zipkin/Jaeger.
-
 Giúp phát hiện bottleneck (điểm nghẽn) trong Service API.
 
-📖 Câu chuyện minh họa
-Hãy tưởng tượng bạn đặt hàng trên một app thương mại điện tử:
+6. Database
+Database -> Luu tr? và truy xu?t d? li?u
 
-Người dùng nhấn nút “Mua hàng” → request gửi tới Service API.
+-- Theo mn dã bi?t thì có nhung lo?i database nào ??
 
-Service API kiểm tra số lượng sản phẩm trong kho.
+SQL: Mysql, oracle,PostgreSQL, sql server....
+Nonsql: Redis, Elastich search, MongoDB, Apache Cassandra(big data)
+Ví dụ:
+MySQL: dữ liệu giao dịch.
+Elasticsearch: tìm kiếm sản phẩm.
+Redis: cache để tăng tốc.
 
-Tính phí ship dựa trên địa chỉ.
+Câu chuyện: T?i uu database: Index, partition:
 
-Trừ tiền trong ví điện tử hoặc gọi sang cổng thanh toán.
+7. Các yếu tố ảnh hưởng đến hiệu năng Api
 
-Ghi log giao dịch để phục vụ báo cáo và kiểm toán.
+1. Cấu trúc mã nguồn
+Code vòng lặp lồng nhau, logic dư thừa.
+Không áp dụng asynchronous processing.
+Thiếu batch processing.
 
-Trả về kết quả cho người dùng: “Đặt hàng thành công”.
+2. Thiết kế truy vấn DB
+Thiếu index → full table scan.-> Demo
+Không partition/sharding → dữ liệu lớn chậm.
+Query nặng: nhiều join, subquery không tối ưu.
+Trình bày v? cách mà m?t câu l?nh select nó hoat
 
-👉 Nếu Service API chậm ở bất kỳ bước nào (ví dụ query DB mất 2 giây thay vì 200ms), người dùng sẽ thấy app “lag” hoặc thậm chí timeout.
+
+3. Cấu hình cache
+Redis/Memcached giảm tải DB.
+--> Cân nhac demo n?u ok
+
+Lỗi thường gặp: invalidate sai, key thiết kế kém.
+
+4. Data Volume
+DB ít dữ liệu → test nhanh nhưng không phản ánh thực tế.
+
+Ví dụ: test API “lịch sử đơn hàng” thì chúng ta phải chuẩn bị đủ dữ liệu với yêu cầu như sau:
+
+Tổng số lượng bản ghi trong order_history.
+
+Tổng số bản ghi trên từng customer.
+
 
