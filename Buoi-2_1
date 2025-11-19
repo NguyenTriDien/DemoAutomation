@@ -27,22 +27,14 @@ Người dùng nhấn nút Ð?t don hàng → tạo request POST /api/orders.
 3. API Gateway
 Ví d? 1: “M?i ngu?i di sân bay dúng k.API Gateway giống như cổng kiểm soát ở sân bay: tất cả hành khách (Nhu các request) đều phải đi qua đây để được kiểm tra giấy tờ(Ðúng k, h?t h?n chua) (authentication), giới hạn số lượng (rate limiting), và ghi lại nhật ký (logging).”
 
-Ví dụ:
-
-Auth: JWT, OAuth2.
-
-Rate limiting: Bucket4j + Redis.
-
-Logging: Spring Cloud Sleuth + Zipkin.
-
-K?t lu?n: Nếu không có API Gateway, một request độc hại có thể đi thẳng vào hệ thống, giống như hành khách không qua cửa an ninh.
+Chúng ta thấy Nếu không có API Gateway, một request độc hại có thể đi thẳng vào hệ thống, giống như hành khách không qua cửa an ninh.
 
 Ví d? 2: Trong th?i d?i nhà nhà ngu?i ngu?i làm micro service: Hi?u don gian là tach nh? m?t h? th?ng to thành ra nhi?u h? th?ng nh? và ph?i hop giao ti?p nh?p nhàng v?i nhau
 product-service: 10.0.10.9 ->POST: https://10.0.10.9:8000/products-service/products
 order-service: 10.0.10.10  ->POST: https://10.0.10.10:8000/orders-service/order
 ........
-Mình s? ph?i luôn nh? d?a ch? c?a máy ch? service dó. Và khi tích h?p thì m?i service thì FE l?i ph?i c?u hình m?t ip máy ch? backend khác nhau dúng k ?. 
-Thì api getway du?c sinh ra d? gôp nh?t tât c? endpoint c?a t?t c? service v? m?t chô. Lúc này thì FE ch? c?n g?i d?n m?t endpoin duy nh?t và gateway s? có trách nhi?m di?u hu?ng request d?n các service tuong ?ng.
+Mình sẽ phải luôn luôn nhớ địa chỉ service dó. Và khi tích hợp thì thì các client gọi đến các service thì lai phải cấu hình từng ip máy ch ủbackend khác nhau dúng k ?. 
+Thì api getway được sinh ra để gôp nhất tất cả endpoint Của tất cả service vào một chỗ. Lúc này thì ví dụ FE chỉ cần gọi một endpoin duy nhất và gateway sẽ có trách nhiệm điều hướng request đến các service tuong ứng.
 Ví d?: Tên công ty c?a minh là Example. Thì s? c?u hình theo d?ng
 +POST: https://example.com.vn/products-service/products
 +POST: https://example.com.vn/orders-service/orders
