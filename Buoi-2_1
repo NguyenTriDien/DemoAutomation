@@ -1,0 +1,132 @@
+1. Tổng quan kiến trúc hệ thống hiện đại
+Mô hình các b?n dã bi?t: FE -> BE -> Database
+Nhung thuc tê m?t h? thông nó có nhiêu thành ph?n c?u thanh hon n?a. ? giua các thành phân nó s? có thêm layer khác. Và môi t?ng nó s? có nhi?m v? riêng c?a nó
+
+Ví d?: Khi minh bam dat hàng và thanh toán m?t don hàng trên shoppe. Nó không don thu?n là 
+B?m dat hang -> backend luu vào database -> tr? ra cho ngu?i dùng mà th?c t? request nó di qua rât nhiêu t?ng ? gi?a n?a truoc khi don hàng dó du?c d?t thành công ha
+
+Sau dây em s? gi?i thieu cho mn mô hình ph? bi?n và g?n nhu nó là xuong s?ng cua m?t h? thông service ha
+
+
+Ví dụ dẫn dắt: Người dùng → Frontend (App/Web) → API Gateway → Load Balancer → Service API → Database. 
+→ Giống như quy trình gọi món ăn qua app: lễ tân (API Gateway), quản lý bếp (Load Balancer), đầu bếp (Service API), kho nguyên liệu (Database).
+
+2. Frontend (FE)
+Em nghi o day mn ai cung dang và muognwf tuong ra duoc FE nó là gì r?i dúng k ??
+Em nh? m?t anh ch? th? dienx dat theo í hi?u c?a mình xem FE là gì.
+
+Cách diễn đạt: “Frontend chính là nơi người dùng chạm vào hệ thống. Nếu ví hệ thống là một nhà hàng, thì Frontend chính là menu và bàn phục vụ.”
+
+Ví dụ:
+Web: ReactJS, Angular, VueJS.
+Mobile: Android (Kotlin/Java), iOS (Swift).
+
+Người dùng nhấn nút Ð?t don hàng → tạo request POST /api/orders.
+--> Mình ch?n món an sau dó ph?c v? mang t? don hàng di vào qu?y d? d?u b?p n?u
+
+3. API Gateway
+Ví d? 1: “M?i ngu?i di sân bay dúng k.API Gateway giống như cổng kiểm soát ở sân bay: tất cả hành khách (Nhu các request) đều phải đi qua đây để được kiểm tra giấy tờ(Ðúng k, h?t h?n chua) (authentication), giới hạn số lượng (rate limiting), và ghi lại nhật ký (logging).”
+
+Ví dụ:
+
+Auth: JWT, OAuth2.
+
+Rate limiting: Bucket4j + Redis.
+
+Logging: Spring Cloud Sleuth + Zipkin.
+
+K?t lu?n: Nếu không có API Gateway, một request độc hại có thể đi thẳng vào hệ thống, giống như hành khách không qua cửa an ninh.
+
+Ví d? 2: Trong th?i d?i nhà nhà ngu?i ngu?i làm micro service: Hi?u don gian là tach nh? m?t h? th?ng to thành ra nhi?u h? th?ng nh? và ph?i hop giao ti?p nh?p nhàng v?i nhau
+product-service: 10.0.10.9 ->POST: https://10.0.10.9:8000/products-service/products
+order-service: 10.0.10.10  ->POST: https://10.0.10.10:8000/orders-service/order
+........
+Mình s? ph?i luôn nh? d?a ch? c?a máy ch? service dó. Và khi tích h?p thì m?i service thì FE l?i ph?i c?u hình m?t ip máy ch? backend khác nhau dúng k ?. 
+Thì api getway du?c sinh ra d? gôp nh?t tât c? endpoint c?a t?t c? service v? m?t chô. Lúc này thì FE ch? c?n g?i d?n m?t endpoin duy nh?t và gateway s? có trách nhi?m di?u hu?ng request d?n các service tuong ?ng.
+Ví d?: Tên công ty c?a minh là Example. Thì s? c?u hình theo d?ng
++POST: https://example.com.vn/products-service/products
++POST: https://example.com.vn/orders-service/orders
+---> Ð?a ch? duy  nhât m?i ngu?i c?n nh? dó là example.com.vn và gateway nó s? nh?n bi?t request  này thu?c v? service nào d? di?u hu?ng request.
+
+4. Load Balancer
+Bu?i hôm tru?c mình có d? c?p d?n vi?c auto scaling dúng k ?.
+Mô hình c?a nó s? là
+Server 1: ...........
+  + Server 2: Ðu?c kh?i t?o -> Tr?ng thái processing
+--> Request v?n s? ch? du?c g?i vào server 1. Vì n?u g?i vào server 2 --> L?i
+  + Server 2: ready
+--> Request g?i vào server 1: server 2---> T?i phân b? nhu th? nào trên 2 server : Rule????(CPU, RAM, T?ng request dang x? lí, Response time ..)
+  + Server 2: Down
+--> Request v?n s? ch? du?c g?i vào server 1. Vì n?u g?i vào server 2 --> L?i
+Câu h?i d?t ra: Làm sao d? h? th?ng bi?t du?c request nào du?c g?i vào server nào? Trên mình có Gateway đóng vai trò là điểm vào duy nhất ch? không dóng vài trò phân t?i request.
+--> Ðây chính là lúc chúng ta c?n d?n Loadbalance --> B? cân b?ng t?i
+Chúng ta hi?u: “Load Balancer giống như người điều phối bàn ăn trong nhà hàng: khách đến đông thì chia đều vào nhiều bàn để không ai phải chờ lâu.”
+--> Ðóng vai trò nhu ngu?i nh?c tru?ng di?u ph?i request.
+
+Các lo?i :.......
+Hardware LB: F5 BIG-IP.
+Software LB: Nginx, HAProxy.
+Cloud LB: AWS ALB, Azure LB.
+
+5. Service API – Trái tim của hệ thống
+🧩 Cách diễn đạt
+“Service API chính là trái tim của hệ thống – nơi mọi nghiệp vụ được xử lý. Nếu trái tim khỏe, toàn bộ hệ thống vận hành trơn tru. Nếu trái tim yếu, mọi thành phần khác đều bị ảnh hưởng.”
+
+⚙️ Các thành phần chính
+Business Logic (Logic nghiệp vụ):
+
+Đây là phần “não bộ” của Service API.
+
+Ví dụ: xử lý thanh toán, đăng ký tài khoản, quản lý sản phẩm, tính phí vận chuyển.
+
+Nếu logic viết không tối ưu (ví dụ vòng lặp thừa, gọi DB nhiều lần), hiệu năng sẽ giảm mạnh.
+
+Data Access Layer (Truy cập dữ liệu):
+
+Service API thường phải đọc/ghi dữ liệu từ Database.
+
+Ví dụ: MySQL/PostgreSQL cho dữ liệu giao dịch, MongoDB cho dữ liệu phi cấu trúc.
+
+Performance tester cần kiểm tra tốc độ query, số lượng connection, và tối ưu index.
+
+Caching (Bộ nhớ đệm):
+
+Redis/Memcached giúp giảm tải cho DB bằng cách lưu dữ liệu tạm thời.
+
+Ví dụ: thông tin sản phẩm hot được cache để trả về nhanh hơn.
+
+Nếu không có cache, mỗi request đều phải truy vấn DB → chậm.
+
+Communication (Giao tiếp):
+
+Service API có thể giao tiếp với service khác qua REST, gRPC, hoặc message queue (Kafka, RabbitMQ).
+
+Performance tester cần kiểm tra độ trễ khi gọi service khác, đặc biệt trong kiến trúc microservices.
+
+Observability (Khả năng quan sát):
+
+Monitoring: Prometheus + Grafana.
+
+Logging: ELK Stack.
+
+Tracing: Zipkin/Jaeger.
+
+Giúp phát hiện bottleneck (điểm nghẽn) trong Service API.
+
+📖 Câu chuyện minh họa
+Hãy tưởng tượng bạn đặt hàng trên một app thương mại điện tử:
+
+Người dùng nhấn nút “Mua hàng” → request gửi tới Service API.
+
+Service API kiểm tra số lượng sản phẩm trong kho.
+
+Tính phí ship dựa trên địa chỉ.
+
+Trừ tiền trong ví điện tử hoặc gọi sang cổng thanh toán.
+
+Ghi log giao dịch để phục vụ báo cáo và kiểm toán.
+
+Trả về kết quả cho người dùng: “Đặt hàng thành công”.
+
+👉 Nếu Service API chậm ở bất kỳ bước nào (ví dụ query DB mất 2 giây thay vì 200ms), người dùng sẽ thấy app “lag” hoặc thậm chí timeout.
+
