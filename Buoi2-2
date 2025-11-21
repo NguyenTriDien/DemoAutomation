@@ -68,7 +68,13 @@ Sau này change Database thì không c?n vi?t l?i SQL mà ORM t? chuy?n d?i
 ----------------------------------------------------
 Khi chúng ta dã hi?u v? m?t câu trúc c?a m?t backend service r?i. Thì câu h?i d?t ra là chúng ta ki?m soát ho?t d?ng và hi?u nang c?a nó b?ng cách nào
 +  Loging -> ELK: Elastichsearh -> Logstash -> Kibana
+Logging (ELK Stack):
+Elasticsearch → lưu trữ log.
+Logstash → xử lý log.
+Kibana → hiển thị log trực quan.
 +  Monitoring: Prometheus -> Grafana
+Prometheus → thu thập metric (CPU, RAM, DB connection).
+Grafana → hiển thị dashboard trực quan.
 --> Demo d? t?u vào 6p mà check log và grafana
 
 -----------------------------------------------
