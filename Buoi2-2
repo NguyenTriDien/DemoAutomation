@@ -1,0 +1,76 @@
+2. Luồng xử lý trong Spring Boot (20’)
+Tru?c khi di vào chi ti?t thì chúng ta th? dùng ki?n th?c d? th? hình dung xem nó có th? g?m nh?ng thành ph?n gì nhé ?
+POST: https://example.com.vn/products-service/products
+Url: -> Endpoint
+Request Body: -> Request
+Response Body: -> Response
+
+--> Ðây 3 cái th? co b?n nh?t dap vao mat chung ta khi chung ta làm vi?c v?i api dung k ?. Bây gi? chúng ta di tìm hi?u xem là.
+Mot ung dung Backend thì co b?n nh?t thì nó s? có các thành ph?n gì ha.
+Controller -> Service -> Repository -> Entity/DTO -> Response
+
+1.Controller
+Nhiệm vụ:
+Là “cửa ngõ” của hệ thống, tiếp nhận request từ client (trình duyệt, mobile app, Postman…).
+Xác định API nào được gọi, tham số truyền vào, và chuyển tiếp cho Service xử lý.
+
++POST: https://example.com.vn/products-service
+-> Controller: Noi khai báo t?t c? nh?ng endpoint c?a api.
+Product -> ProductController
+Order -> OrderController
+--> Và chúng du?c dánh d?u là @RestController
+--> Democode
+Api: GET,POST,PUT
++ Gi?i thích
+  + Request
+  + Response
+- Method: Chúng ta th?nh tho?ng dâu dó s? hay g?p câu h?i khi di ph?ng. Các method api hay gap. Anh có th? d?ng GET thay POST,... du?c k???
+-------> Ðu?c k ??? --> Ðu?c nhá
+Method api không làm ?nh hu?ng d?n logic api. Nhung chúng s? làm rõ í nghia c?a api ha. Và làm gì thì làm trong công vi?c chúng ta luôn có tiêu chu?n cho công viêc.
+Thì APi cung th?. Chúng có chu?n c?a API: Restfull,.....
+- Moi nguoi cung d? ý s? th?y ? Controller không h? xu?t hi?n logic nghi?p v? nào ? dây c? dúng k ?. B?ng ch?ng là chúng ta không có if else gì c?
+--> Controller ch? nên dùng d? h?ng Request thôi ha. Ch? không x? lí logic gì ? dây c?.
+2. Service
+Nhiệm vụ:
+Xử lý logic nghiệp vụ: tính toán, kiểm tra điều kiện, gọi Repository để lấy dữ liệu.
+Đảm bảo các quy tắc nghiệp vụ được thực hiện đúng.
+--> 80% l?i c?a Function test, NNF test s? n?m ? dây. Các dòng log mà moi ngu?i g?p khi check log í thì 80% cung du?c log ra ? t?ng này
+Tuong t? nhu Controller thì quy t?c dat ten c?a service cung tuong t?
+Product -> Product Service
+Order -> Order Service
+--> Và chúng cung duoc danh d?u là @Service
+
+3. Repository
+Nhiệm vụ:
+Là tầng giao tiếp với Database.
+Chịu trách nhiệm chạy query, tìm kiếm, lưu, cập nhật dữ liệu.
+Và quy u?c d?t tên cung tuong t?:
++ ProductRepository
++ OrderRepository
+- Gi?i thíc v? entity
+Nhiệm vụ:
+Là lớp ánh xạ dữ liệu từ bảng trong DB sang đối tượng Java.
+Giúp lập trình viên làm việc với dữ liệu như đối tượng thay vì phải thao tác trực tiếp với SQL.
+Ví dụ: Bảng orders trong DB có cột id, customer_name, total_price → ánh xạ thành class OrderEntity trong Java.
+----- Gi?i thíc v? dto
+Nhiệm vụ:
+Là lớp trung gian để truyền dữ liệu giữa các tầng (Service ↔ Controller ↔ Client).
+Giúp tách biệt dữ liệu nội bộ (Entity) với dữ liệu trả về cho client.
+Ví dụ: OrderDto chỉ chứa id, customerName, status để trả về cho client, không cần toàn bộ dữ liệu như trong Entity.
+
+--> Moi ngu?i th?y ? dây k h? có s? xu?t hi?n c?a b?t kì m?t câu SQL nào dúng k ?. Th?c t? b?n ch?t là nhung hàm này tuong ung voi câu query dó ?.
+Ch?ng qua chúng ta dùng framework nên nó h? tr? ta convert function qua câu sql. Và chúng ta cung có th? t? vi?t SQL Raw (Native query) ? dây n?u các function
+mà framework cung c?p không dáp ?ng du?c. Các framework h? tr? thao tac v?i database ngu?i ta goi là ORM
+M?c dích sinh ra th?ng này là d? tách bi?t h?n vi?c nghi?p v? và database
+Ngày xua Code -> Database
+Ngày nay: Code -> ORM -> Database
+Sau này change Database thì không c?n vi?t l?i SQL mà ORM t? chuy?n d?i
+----------------------------------------------------
+Khi chúng ta dã hi?u v? m?t câu trúc c?a m?t backend service r?i. Thì câu h?i d?t ra là chúng ta ki?m soát ho?t d?ng và hi?u nang c?a nó b?ng cách nào
++  Loging -> ELK: Elastichsearh -> Logstash -> Kibana
++  Monitoring: Prometheus -> Grafana
+--> Demo d? t?u vào 6p mà check log và grafana
+
+-----------------------------------------------
+Hu?ng d?n cài d?t project
+------------------------------------------------
