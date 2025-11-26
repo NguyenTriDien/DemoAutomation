@@ -6,7 +6,6 @@ ch? ch?t c?a Jmeter chúng ta s? tìm hi?u chi ti?t vào các bu?i sau ha.
 Không bi?t có b?n nào chua cài d?t du?c jmeter không a. Ok tru?c khi di vào chi ti?t bu?i hôm nay m?i ngu?i làm giúp em  m?t vi?c nhu sau nhá.
 -- Hu?ng dân c?u hình các thu c?n thi?t
 1. Gi?i thi?u v? Jmeter
-
 - Là m?t opensource du?c phát hành b?i Apache Software Foundation
 - Jmeter du?c vi?t 100% b?ng java
 
@@ -18,6 +17,9 @@ Em có vi?t thêm các ch?c nang cho Jmeter vì d?c thù công vi?c c?n thi?t. T
 - Ði?u thú v? v? jmeter dó là lúc mà nó du?c t?o ra thì m?c dích ban d?u c?a nó dùng cho functional web application test ha.Sau này thì nó m?i du?c c?i ti?n phát tri?n tr? thành tool chuyên bi?t
 cho performance test. Cung chính vì di?u dó nên dén hi?n t?i thì mn v?n có th? dùng jmeter d? làm automation test duc? ha. Mn có th? tìm hi?u thêm v? Selenium webdriver with jmeter.
 Nhung mà chúng ta ch? nên xem các tính nang automation test dó là b? tr? thôi ha. Còn d? làm automation test thì nên s? d?ng các công c? chuyên bi?t nhu Selenium, Serenity,... thì s? hi?u qu? hon.
+
+--> Lý thuy?t m?i ngu?i có th? tham kh?o thêm trang ch? c?a Jmeter nhé: https://jmeter.apache.org/
+
 
 2. Ph?n ti?p theo chúng ta s? tìm hi?u v? cách mà jmeter ho?t d?ng. Mình s? d?ng nó mà nên c?n bi?t du?c cách mà nó v?n hành
 --> Show hình so d? trên slide
