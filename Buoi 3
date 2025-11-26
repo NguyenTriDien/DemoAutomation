@@ -81,8 +81,9 @@ Bên c?nh dó chúng ta có
 Ví d?: Threadgroup, Config element,..
  + Bên ph?i: Khi mà các b?n ch?n vào b?t kì m?t cái c?u hình nào dó thì tuong ?ng bên pha? nó s? hi?n th? các c?u hình chi ti?t tuong ?ng vào config dó ha.
 Ví d?: Http request
-TestPlan: M?t testscript thì ch? có m?t testplan duy nh?t ha. Chúng ta không th? t?o thêm 1 testplan th? 2 trong testplan khác ha.
-Thread Group: Các b?n hi?u nó nhu là m?t Testsuite. Noi nó t?p h?p các test case c?a m?i ngu?i trong manual í. Vì lí thuy?t c?a Thread Group thì nó vi?t là b?n ch?t c?a m?t Thread Group là d?i di?n cho m?t nhóm các action
+ --> Gi?i thi?u thôi k demo
+- TestPlan: M?t testscript thì ch? có m?t testplan duy nh?t ha. Chúng ta không th? t?o thêm 1 testplan th? 2 trong testplan khác ha.
+- Thread Group: Các b?n hi?u nó nhu là m?t Testsuite. Noi nó t?p h?p các test case c?a m?i ngu?i trong manual í. Vì lí thuy?t c?a Thread Group thì nó vi?t là b?n ch?t c?a m?t Thread Group là d?i di?n cho m?t nhóm các action
 ho?c m?t nhóm các user th?c hi?n các action nào dó. Và trong Testplan b?t bu?c ph?i  có ít nh?t 1 ho?c nhi?u ThreadGroup.
 Ví d?: 
  Threadgroup 1: Login
@@ -95,5 +96,109 @@ Ví d?:
 Thì v?i Jmeter cung v?y nó cung cung câp cho chung ta các ThreadGroup d? làm di?u dó
 + setUp Thread Group
 + tearDown Thread Group
+--> Ch? nói qua thôi không di quá chi ti?t.
+
+---> Ok chúng ta quay l?i v?i thành ph?n quan tr?ng nh?t nào. Ðó là ThreadGroupd
+Nhu có d? c?p o trên 1 TestPlan n?u không có ThreadGroup nào thì TestPlan dó không dùng d? làm gì c?. Và nói cách khác là TestPlan dó không h?p l?
+--> OK khi mn d?ng ? TheadGroupd và Click chu?t trái
+Thì t?t c? m?i th? quan tr?ng nh?t c?a Jmeter dùng d? c?u hình TestPlan d?u n?m trong này.
+Click chu?t ph?i -> Ðây là t?t c? m?i th? quan tr?ng nh?t. Thì trong bu?i hôm nay chúng ta s? c? g?ng di h?t m?t lu?t các thành ph?n này ha. Mình s? tìm hi?u so qua xem các Componon này nó là gì và nó dùng d? gi?i quy?t bài toán gì ha
+--> Ð?u tiên
+***** Sampler: Ðây chính là request mà mình gi? l?p g?i lên server ha. Thì trong  này chính là m?t danh sách các d?ng mà Jmeter h? tr? gi?i lâp nha.
+ + Http request  này
+ + FPT request này
+ + SMTP request này (Mail server)
+--> Ðâu chính là thành ph?n c?t lõi nh?t c?a Jmeter ha. Và m?c d? quan tr?ng không kém so v?i ThreadGroup. Có th? hi?u don gi?n là
+M?i TestPlan n?u không có ThreadGroupd thì TestPlan dó không h?p l?. Và TheadGroup mà không ch?a Sample thì ThreadGroup d?y không dùng d? làm gì c?. --> Vô d?ng
+
+Ví d? v? trang ch? Jmeter:
+https://jmeter.apache.org/index.html
+Nhìn thì chúng ta th?y có r?t nhi?u input ha. Nhung th?c t?t chúng ta ch? c?n quan tâm d?n m?t s? thông tin sau
+protocol: https -> Defaul thì Jmeter s? nh?n là HTTP ha. 
+Server Name or IP: jmeter.apache.org
+Port Number: HTTP -> 8080, HTTPS -> 443 -> Defaul thì Jmeter s? t? nh?n bi?t d?a vào protocol -> Ði?n cung du?c mà không di?n cung du?c
+Method: GET
+Path: /index.html
+******* Truoc khi run mn thêm giúp em m?t cái sau. Ð?ng ? TestPlan thêm giúp em View result tree
+--> Listener là m?t componon giúp mn view k?t qu? test theo nhi?u chi?u view khác nhau ha. D?ng cây, d?ng b?ng, d?ng bi?u d?. View result tree là d?ng listener huu ích nhât cho moi nguoi trong qua trình làm TestPlan ha
+--> Ok d?n dây chua v?i run ha. View result tree mình dang t?o ra o level TestPlan thì nó s? áp d?ng cho t?t c? Sample trong t?t c? ThreadGroup ha. Còn n?u m?i ngu?i t?o View result tree trong 1 ThreadGroupd thì nó
+ch? áp d?ng cho các Sample ? trong ThreadGroupd dó. Và n?u mn t?o ta du?i 1 sample thì nó ch? áp d?ng cho chính Sample dó thôi ha
+
+--> ? dây ta th?y ph?m vi áp d?ng c?a nó là gì ?. Là áp d?ng cho t?t c? m?i request dúng du?i nó (Nghia là dúng du?i level c?a nó nhé. Ch? không ph?i d?ng theo v? trí trên giao di?n dâu nhé. M?i ngu?i luu í ch? này)
+--> Demo kéo len kéo xu?ng ......
+
+OK bây gi? m?i ngu?i click vào nút tam giác xem nó run ra gi?ng nhu em không ?.
+
+- Ti?p theo tuong t? m?i ngu?i config thêm cho em m?t request th? 2.
+https://www.apache.org/licenses/
+Mn c?u hình tuong t? nhu overview nhá!
+--> Run thu xem ok nhu này chua ?
+- Ti?p theo mn c?u hình thêm cho em m?t request n?a nhá
+https://jmeter.apache.org/download_jmeter.cgi
+Thì ? dây mn setup nhanh b?ng cách Ctr + C -> Ctr + V d? copy nhanh Sample và s?a l?i ha. Ðây ch ? khác nhau Path thôi nên ch? c?n d?i path là ok .
+-> Cle? log cu di b?ng cách b?m vào cái Ch?i ho?c Ctrl + E ha
+-> Run l?i b?ng cách b?m Tam giác ho?c CTRL + R nha
+****** Config Element
+--> M?i ngu?i nhìn vào 3 request này th?y có di?m gì gi?ng nhau k  ?
+-> Https
+-> Domain
+Ví d? truong h?p nhu sau. M?i ngu?i làm TestPlan cho m?i s?n ph?m nào dó ch?ng h?n. C?u hình xong t?m 100 request di. Sau d?y dev d?i domain dúng k. Thì mn c?n ph?i làm sao ?
+-> Ði vào t?ng request d? d?i dúng k-> V?n work . Và c?u hình xong 100 request dó. Sang m?t ngày d?p tr?i l?i d?i domain
+--> Có cách nào giúp chúng ta do t?n công s?c hon khong khi mà có s? thay d?i c?a các thông s? du?c s? d?ng nhi?u noi không???
+***** User Defined Variables -> Là noi chúng ta khai báo t?t c? các bi?n dùng chung. Và tuong t? nhu Listener thì ph?m vi áp d?ng c?a th?ng này cung tuong t? ha. Thông thu?ng nh?ng th? liên quan d?n 
+config thì ta nên d? lên dau cho de quan tr? ha.
+protocol: https
+port: 443
+host: jmeter.apache.org
+--> Chúng ta dã d?nh nghia du?c các bi?n r?i. Thì câu chuy?n bây gi? là dùng các bi?n này b?ng cách nào
+--> Jmeter cung c?p cú pháp g?i bi?n nhu sau: ${varName}.
+Chúng ta cùng nhau s?a lai TestPlan nào
+------- Run l?i --> Pass
+Ð?n dây ta th?y TestPlan b?t d?u t?i uu d? maintain hon r?i ha. Nhung chúng ta ti?p t?c de í là. T?t c? request trong Testplan d? c?n khai báo Protocal, Domain, Host.
+Vây có cách nào chúng ta ch? c?n khai báo m?c dinh 1 làn thôi không. Ð? các request còn l?i ch? vi?t an theo mac dinh cái chung ta khai bao ban d?u. Và chúng ta ch? c?n thay d?i các thông s? c?n thay d?i thôi thì 
+s? t?i uu hon dúng k.
+
+***** HTTP Request Defaults
+--> Các b?n run th? xem work không ?
+
+**** Logic controler
+Ok nhu m?i nguoi th?y th? t? th?c thi Sample trong ThreadGroup là nhu nào ?
+-> Th? t? l?n lu?t t? trên xu?ng dúng k? Nhung th?c t? trong công vi?c chúng ta c?n nhi?u hon th?. Chúng ta mong mu?n thay d?i cách thuc thi th? t? c?a các sample. 
+Ví d? Random, Song song,...
+Thì lúc này chúng ta c?n d?n s? tr? giúp c?a m?t Componon có tên là **Logic controler
+-> Trong này chua danh sách t?t c? cac Controler mà Jmeter h? tr? ha. Chúng ta s? có m?t buôi chi ti?t v? các Controler hay s? d?ng và cách dùng nó ha. Buôi hôm nay chúng ta di overview thôi
+Ví d? em c?n ch?y random th? t? các request ch?ng h?n
+Click chu?t ph?i -> Add -> Logic controler -> Random Order Controller
+-> Run vài l?n dê thay kêt qua khac nhau
+ *** Timer
+Mn d? í nhá lúc mình ch?y rõ ràng là Jmeter ch?y l?n lu?t các request theo logic sau
+Request 1 -> Ch? response1 -> Request 2 -> Response2 -> Request 3
+Thì m?c d?nh c?a Jmeter thì s? không có khoang th?i gian nào ng?ng ngh? gi?a các request c?. Nhung mà th?c t? rõ ràng là ngu?i dùng h? vào overvew xong thì h? chua h? vào License luôn dúng k.
+Mà h? s? ch?m l?i ng?ng m?t chút d? d?c thông tin xem trang nay có gì dã. Kho?ng th?i gian này g?i là ThinkTime -> Thoi gian suy nghi  -> Constant Timer
+--> Ph?m vi áp d?ng tuong t? ha. Và Timer này s? ho?t d?ng nhu th? nào ?.
+? dây có 2 k?ch b?n x?y ra nhu sau. M?i ngu?i th? ch?y r?i tr? l?i xem k?ch b?n nào dúng ha
+ Request 1 -> Timer -> Request 2 -> Timer -> Request 3 -> Timer ???
+Timer -> Request 1 -> Timer -> Request 2 -> Timer -> Request 3 ??? -> YES
+-> Timer s? ch?y tru?c khi request b?t d?u
+**** Assertion
+--> M?i ngu?i quan sat log th?y n ó xanh xanh không ?. Thì cam quan theo logic bình thuognwf thì mình t?m cho nó là Pass dúng k. Thì m?c d?nh Jmeter dua vào status code d? cho nó là pass hay fail ha.
+Chúng ta cung có 1 bu?i d? di chi ti?t v? v?n d? này.
+M?i ngu?i làm Manaual hay Automation cung th?. Chúng ta luôn có Expected khi mà th?c thi dúng k.
+Manual: Dùng m?t d? check xem response tr? v? có dúng nhu mong mu?n không
+Aumation: Assert equals, Assert True,...
+Performance cung th? dúng k. Mình g?i request di thì cung can kiem tra xem nhu nào nào là mot request pass. Ð? ki?m tra du?c thì Jmeter cung c?p cho chúng ta m?t thành ph?n g?i là Assertions
+Assertion thì chúng ta hay assert trên request dúng k. Thì theo ph?m vi áp d?ng c?a Assertion cung nhu m?y config khác thôi. Vì là assert trên request nên chúng ta d?ng ? request
+Click chu?t ph?i -> Add -> Assertions -> Response Assertion
+********What can I do with it?*******
+--> Run -> Xanh Passs
+Còn n?u tài li?u thi?t k? yêu c?u khi vào trang Overview ph?a có Text 
+****Wellcome Jmeter****
+S?a assert 
+--> Run fail.....
+
+8. Cấu trúc của một dự án Performacne test
+-> Ph?n này m?i ngu?i d?c qua d? bi?t tru?c và chua cân c?u hình theo vôi ha. Các bu?i h?c sau chúng ta s? v?a th?c hành v?a back l?i câu trúc này và c?u hình theo nhé ?
+
+
 
 
