@@ -18,6 +18,7 @@ Em có vi?t thêm các ch?c nang cho Jmeter vì d?c thù công vi?c c?n thi?t. T
 - Ði?u thú v? v? jmeter dó là lúc mà nó du?c t?o ra thì m?c dích ban d?u c?a nó dùng cho functional web application test ha.Sau này thì nó m?i du?c c?i ti?n phát tri?n tr? thành tool chuyên bi?t
 cho performance test. Cung chính vì di?u dó nên dén hi?n t?i thì mn v?n có th? dùng jmeter d? làm automation test duc? ha. Mn có th? tìm hi?u thêm v? Selenium webdriver with jmeter.
 Nhung mà chúng ta ch? nên xem các tính nang automation test dó là b? tr? thôi ha. Còn d? làm automation test thì nên s? d?ng các công c? chuyên bi?t nhu Selenium, Serenity,... thì s? hi?u qu? hon.
+
 2. Ph?n ti?p theo chúng ta s? tìm hi?u v? cách mà jmeter ho?t d?ng. Mình s? d?ng nó mà nên c?n bi?t du?c cách mà nó v?n hành
 --> Show hình so d? trên slide
 - V? b?n ch?t khi mà Jmeter nó ho?t d?ng. Thì nó s? gi? l?p request g?i lên server. Thì client g?i lên server cái gì thì jmeter s? b?t chu?c và gi?i l?p i chang. Và nó dóng vai trò nhu m?t client g?i
@@ -37,5 +38,62 @@ Và sau khi th?c hi?n và gom du?c n request dó thì nó s? x? lí và dua ra k
 Chúng ta test performance ? phía server side. Khi m?i ngu?i nói d?n performance test thì 95 -> 99% chúng ta dang nói d?n vi?c performance test ? phía server ha.
 Lý do thì bu?i 1 em có nói qua r?i.
 +Lý do 1: Khi mình có m?t ?ng d?ng ha. Thì client có th? có r?t nhi?u. Web application, Mobile vân vân và mây mây ha. Nhung server ch? có 1. Dù có bao nhiêu client di n?a thì request cung s? d? v? m?t hu?ng dó là
-Server ha.
+Server ha. Có N client cùng g?i request lên server thì server ph?i x? lí N request dó cùng lúc thì lúc dó chúng ta m?i cân di do performance ha
 +Lý do 2: Server (service) chính là noi x? lí t?t c? nghi?p v? c?a m?t ?ng d?ng ha. Và nó là noi giao ti?p v?i database
+
+---> Ok ch?t l?i ha. Nói v? performance test thì ta dang nói d?n test performance ? phía server side. Và jmeter dang dóng vai trò gi?i l?p client g?i request lên server. Và các tool khác cung th? thôi ha. B?n ch?t cung là
+gi?i l?p client g?i request lên server và thu th?p các ch? s? d? dánh giá server ha. N?m rõ du?c b?n chât thì sau này các b?n có ti?p cân v?i các công c? khác thì cung r?t nhanh ha. Vì mindset nó ch? có v?y thoi ha.
+Ví d?: Công ty các b?n có phát tri?n m?t ?ng d?ng ch?y trên mobile app ch?ng h?n. M?t ngày depk troi b?n du?c yêu câu test performance cho cái app dó. Thì ch? này b?n ch?t là các b?n không ph?i di test performance cho cái 
+app dó. Mà công vi?c c?n làm là các b?n ph?i di test performance cho cái server mà cái app dó g?i d?n. Lúc này các b?n c?n gi?i l?p các request mà cái app dó g?i lên server ha. 
+Ch? này có m?t cái luu í nhu sau d? các b?n tránh nh?m l?n ha. N?u các b?n nh?n du?c yêu c?u test xem cái app dó dùng có b? nóng máy không. Có b? hao h?t pin nhanh hay không. Khi cài lên thì các ?ng d?ng khac trong máy có
+x?y ra v?n d? gì hay không(Ch?m treo,....) xung d?t ?ng d?ng không. Thì dó không ph?i là performance test ha. Mà b?n ch?t dó ch? là m?t lo?i Non-Functional Testing thôi.
+Có th? g?i nó là Compatibility Testing (Kiểm thử tương thích).
+---> Chúng ta không c?n quan tâm d?n client dó là gì mi?n nó có server d? handle request. Th? mà chúng ta quan tâm là client dó g?i request lên server b?ng cách nào. Và jmeter có h? tr? giao th?c dó hay không.
+---> Vì th? cho nên n?u mn g?p m?t câu h?i Jmeter có h? tr? test mobile app hay không. Thì chúng ta ch? c?n tr? l?i là chúng ta không test performance cho cái app dó. Mà chúng ta ch? c?n xem cách mà app dó
+g?i request lên server và chúng ta b?t chu?c cái cách mà app dó g?i request lên server khi mà chúng ta b?t chu?c du?c thì chúng ta t? l?i có th? dùng jmeter d? test du?c cho server c?a app dó ha.
+
+3. JMeter có thể làm gì??
+Web application
++ Http
++ Https
+--> Html....
+Trong Automation thì mình có khái ni?m là DOM.
+Web service (Api)
++ Http, https
+--> Json, XML,...
+-----> Chúng ta ch? y?u t?p trung vào các giao th?c này ha vì hi?n t?i 90% các ?ng d?ng dung s? d?ng giao thuc này
+Bên c?nh dó chúng ta có 
++ FPT -> File transfer --> Driver luu tr? file, truy?n t?i file
++ Mail
++ Jdbc: Vì jmeter du?c vi?t b?ng Java mà java giao ti?p v?i csdl b?ng jdbc
++ Native command: Ki?u nhu m? CMD gõ ping 8.8.8.8 ...
+
+4. Cách chạy JMeter
++ UI Mode
+---> Là nút xanh xanh này các b?n b?m vào ch?y
++ Chúng ta ch? d?ng UI Mode này d? t?o và debug testplan thôi nhé. Ngay khi các b?n  m? Jmeter nó có m?t dòng wanrning r?t rõ.
+
++ NonUI: Ðây là cách ch?y dúng khi th?c hi?n run test performance ha.
+5. Kiến trúc của Jmeter
+- Shot cut -> Hi?n t?i các b?n ch? c?n d? í giúp mình cái nút Tam giac màu xanh này ha. Và nút hình cái ch?i  này thôi
+- V? giao di?n c?a Jmeter thì nó s? du?c chia b? c?c thành 2 ph?n
+ + Bên trái: Ðây là ph?n mình c?u hình testplan. Toàn b? các thành ph?n t?o testplan khi mình t?o ra thì nó d?u n?m ? bên này.
+Ví d?: Threadgroup, Config element,..
+ + Bên ph?i: Khi mà các b?n ch?n vào b?t kì m?t cái c?u hình nào dó thì tuong ?ng bên pha? nó s? hi?n th? các c?u hình chi ti?t tuong ?ng vào config dó ha.
+Ví d?: Http request
+TestPlan: M?t testscript thì ch? có m?t testplan duy nh?t ha. Chúng ta không th? t?o thêm 1 testplan th? 2 trong testplan khác ha.
+Thread Group: Các b?n hi?u nó nhu là m?t Testsuite. Noi nó t?p h?p các test case c?a m?i ngu?i trong manual í. Vì lí thuy?t c?a Thread Group thì nó vi?t là b?n ch?t c?a m?t Thread Group là d?i di?n cho m?t nhóm các action
+ho?c m?t nhóm các user th?c hi?n các action nào dó. Và trong Testplan b?t bu?c ph?i  có ít nh?t 1 ho?c nhi?u ThreadGroup.
+Ví d?: 
+ Threadgroup 1: Login
+ ThreadGroup 2: Dashboard
+ ThreadGroup 3: Orders
+--> Và các test ? trong các ThreadGroup này khi mà run thì chúng s? du?c run song song cùng nhau
+- TheadGroup trong Jmeter thì nó có 3 cái lo?i chính. Gi?ng nhu automation test m?i ngu?i hay có các annoation ki?u nhw
++ @Before : S? du?c th?c thi tru?c khi các test scenario duc? ch?y
++ @After: S? du?c th?c thi sau khi các scenario ch?y xong
+Thì v?i Jmeter cung v?y nó cung cung câp cho chung ta các ThreadGroup d? làm di?u dó
++ setUp Thread Group
++ tearDown Thread Group
+
+
