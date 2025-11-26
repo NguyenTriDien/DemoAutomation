@@ -1,0 +1,41 @@
+Chào m?i ngu?i. Hôm nay mình dên voi noi dung buoi h?c th? 4 c?a khóa h?c Performance test v?i Jmeter.
+Chúng ta dã tr?i qua 2 n?i dung dó là v? overview performance test ? bu?i 1. Và cung dã dia qua mootj lu?t các khái ni?m liên quan v? m?t h? th?ng backend server.
+Hôm nay chúng mình ti?p t?c m?t bu?i overview n?a v? Jmeter. Tru?c khi di detail v? nó ? các bu?i sau thì chúng ta cungx c?n có cái nhìn t?ng quan v? nó tru?c ha.
+Ð? xem tool này nó là gì, nó làm du?c gì. Và các c?u ph?n ch?c nang c?a nó thì chúng ta s? demo và di qua nhanh m?t lu?t. M?i ngu?i yên tâm là t?t c? thành phân quan tr?ng
+ch? ch?t c?a Jmeter chúng ta s? tìm hi?u chi ti?t vào các bu?i sau ha.
+Không bi?t có b?n nào chua cài d?t du?c jmeter không a. Ok tru?c khi di vào chi ti?t bu?i hôm nay m?i ngu?i làm giúp em  m?t vi?c nhu sau nhá.
+-- Hu?ng dân c?u hình các thu c?n thi?t
+1. Gi?i thi?u v? Jmeter
+
+- Là m?t opensource du?c phát hành b?i Apache Software Foundation
+- Jmeter du?c vi?t 100% b?ng java
+
+-> Vì là opensource nên jmeter là mi?n phí nên ai mu?n s? d?ng cung du?c. Và source code c?a Jmeter cung du?c public ra c?ng d?ng luôn. Cho nên ai mu?n tìm hi?u cách mà jmeter du?c t?o ra,
+bên trong g?m nh?ng thành ph?n gì thì m?i ngu?i có th? t?i source code nó v? d?c ha. Th?m chí n?u có d? ki?n th?c thì m?i ngu?i có th? custome l?i source code c?a nó theo í mu?n c?a mình.
+Em có vi?t thêm các ch?c nang cho Jmeter vì d?c thù công vi?c c?n thi?t. Thì em s? d?y lên cho mn s? d?ng n?u có nhu c?u ha. M?t s? ch?c nang em t? vi?t thêm mn có th? tham kh?o ha.
+++++++++++++
+
+- Ði?u thú v? v? jmeter dó là lúc mà nó du?c t?o ra thì m?c dích ban d?u c?a nó dùng cho functional web application test ha.Sau này thì nó m?i du?c c?i ti?n phát tri?n tr? thành tool chuyên bi?t
+cho performance test. Cung chính vì di?u dó nên dén hi?n t?i thì mn v?n có th? dùng jmeter d? làm automation test duc? ha. Mn có th? tìm hi?u thêm v? Selenium webdriver with jmeter.
+Nhung mà chúng ta ch? nên xem các tính nang automation test dó là b? tr? thôi ha. Còn d? làm automation test thì nên s? d?ng các công c? chuyên bi?t nhu Selenium, Serenity,... thì s? hi?u qu? hon.
+2. Ph?n ti?p theo chúng ta s? tìm hi?u v? cách mà jmeter ho?t d?ng. Mình s? d?ng nó mà nên c?n bi?t du?c cách mà nó v?n hành
+--> Show hình so d? trên slide
+- V? b?n ch?t khi mà Jmeter nó ho?t d?ng. Thì nó s? gi? l?p request g?i lên server. Thì client g?i lên server cái gì thì jmeter s? b?t chu?c và gi?i l?p i chang. Và nó dóng vai trò nhu m?t client g?i
+request lên server.
+- Sau dó server s? ti?p nh?n và x? lí request và response v?
+- Jmeter s? ti?p nh?n response dó gi?ng nhu client ha. Client g?i request di và ti?p nh?n response v? dúng k.
+- Sau khi mà nó ti?p nh?n các response dó thì nó ti?n hành thu th?p các thông tin c?n thi?t v? request dó
+- Ghi lại các thông số quan trọng:
+ +Thời gian bắt đầu (start time).
+ +Thời gian kết thúc (end time).
+ + Thời gian phản hồi (response time).
+ + Mã phản hồi (status code)…
+Và m?t s? thông s? quan trong khác ha. Và m?i request thì nó s? th?c hi?n m?t chu trình nhu v?y ha. Ví d? mình g?i N request thì nó cung th?c hi?n N vòng l?p nhu th? ha.
+Và sau khi th?c hi?n và gom du?c n request dó thì nó s? x? lí và dua ra k?t qu? cu?i cùng.
+
+----> Ð?n dây em nh?n m?nh l?i m?t chút và mn n?m rõ m?t di?u giúp em. Bu?i 1 e cung có d? c?p m?t l?n r?i. 
+Chúng ta test performance ? phía server side. Khi m?i ngu?i nói d?n performance test thì 95 -> 99% chúng ta dang nói d?n vi?c performance test ? phía server ha.
+Lý do thì bu?i 1 em có nói qua r?i.
++Lý do 1: Khi mình có m?t ?ng d?ng ha. Thì client có th? có r?t nhi?u. Web application, Mobile vân vân và mây mây ha. Nhung server ch? có 1. Dù có bao nhiêu client di n?a thì request cung s? d? v? m?t hu?ng dó là
+Server ha.
++Lý do 2: Server (service) chính là noi x? lí t?t c? nghi?p v? c?a m?t ?ng d?ng ha. Và nó là noi giao ti?p v?i database
