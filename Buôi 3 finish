@@ -1,0 +1,206 @@
+Chào mọi người. Hôm nay mình đến với nội dung buổi học thứ 4 của khóa học Performance Test với JMeter.
+Chúng ta đã trải qua 2 nội dung đó là về overview performance test ở buổi 1. Và cũng đã đi qua một lượt các khái niệm liên quan về một hệ thống backend server.
+Hôm nay chúng mình tiếp tục một buổi overview nữa về JMeter. Trước khi đi detail về nó ở các buổi sau thì chúng ta cũng cần có cái nhìn tổng quan về nó trước ha.
+Để xem tool này nó là gì, nó làm được gì. Và các cấu phần chức năng của nó thì chúng ta sẽ demo và đi qua nhanh một lượt. Mọi người yên tâm là tất cả thành phần quan trọng,
+cốt lõi của JMeter chúng ta sẽ tìm hiểu chi tiết vào các buổi sau ha.
+Không biết có bạn nào chưa cài đặt được JMeter không ạ. Ok trước khi đi vào chi tiết buổi hôm nay mọi người làm giúp em một việc như sau nhé.
+-- Hướng dẫn cấu hình các thứ cần thiết
+
+1. Giới thiệu về JMeter
+- Là một opensource được phát hành bởi Apache Software Foundation
+- JMeter được viết 100% bằng Java
+
+-> Vì là opensource nên JMeter là miễn phí, ai muốn sử dụng cũng được. Và source code của JMeter cũng được public ra cộng đồng luôn. Cho nên ai muốn tìm hiểu cách mà JMeter được tạo ra,
+bên trong gồm những thành phần gì thì mọi người có thể tải source code nó về đọc ha. Thậm chí nếu có đủ kiến thức thì mọi người có thể custom lại source code của nó theo ý muốn của mình.
+Em có viết thêm các chức năng cho JMeter vì đặc thù công việc cần thiết. Thì em sẽ đẩy lên cho mọi người sử dụng nếu có nhu cầu ha. Một số chức năng em tự viết thêm mọi người có thể tham khảo ha.
+++++++++++++
+
+- Điều thú vị về JMeter đó là lúc mà nó được tạo ra thì mục đích ban đầu của nó dùng cho functional web application test ha. Sau này thì nó mới được cải tiến phát triển trở thành tool chuyên biệt
+cho performance test. Cũng chính vì điều đó nên đến hiện tại thì mọi người vẫn có thể dùng JMeter để làm automation test được ha. Mọi người có thể tìm hiểu thêm về Selenium WebDriver with JMeter.
+Nhưng mà chúng ta chỉ nên xem các tính năng automation test đó là bổ trợ thôi ha. Còn để làm automation test thì nên sử dụng các công cụ chuyên biệt như Selenium, Serenity,... thì sẽ hiệu quả hơn.
+
+--> Lý thuyết mọi người có thể tham khảo thêm trang chủ của JMeter nhé: https://jmeter.apache.org/
+
+2. Phần tiếp theo chúng ta sẽ tìm hiểu về cách mà JMeter hoạt động. Mình sẽ dùng nó mà nên cần biết được cách mà nó vận hành
+--> Show hình sơ đồ trên slide
+- Về bản chất khi mà JMeter hoạt động, thì nó sẽ giả lập request gửi lên server. Client gửi lên server cái gì thì JMeter sẽ bắt chước và giả lập y chang. Và nó đóng vai trò như một client gửi
+request lên server.
+- Sau đó server sẽ tiếp nhận và xử lý request và response về.
+- JMeter sẽ tiếp nhận response đó giống như client ha. Client gửi request đi và tiếp nhận response về đúng không.
+- Sau khi nó tiếp nhận các response đó thì nó tiến hành thu thập các thông tin cần thiết về request đó
+- Ghi lại các thông số quan trọng:
+ + Thời gian bắt đầu (start time).
+ + Thời gian kết thúc (end time).
+ + Thời gian phản hồi (response time).
+ + Mã phản hồi (status code)…
+Và một số thông số quan trọng khác ha. Mỗi request thì nó sẽ thực hiện một chu trình như vậy ha. Ví dụ mình gửi N request thì nó cũng thực hiện N vòng lặp như thế ha.
+Và sau khi thực hiện và gom được N request đó thì nó sẽ xử lý và đưa ra kết quả cuối cùng.
+
+----> Đến đây em nhấn mạnh lại một chút và mọi người nắm rõ một điều giúp em. Buổi 1 em cũng có đề cập một lần rồi.
+Chúng ta test performance ở phía server side. Khi mọi người nói đến performance test thì 95 -> 99% chúng ta đang nói đến việc performance test ở phía server ha.
+Lý do thì buổi 1 em có nói qua rồi.
++ Lý do 1: Khi mình có một ứng dụng ha. Thì client có thể có rất nhiều: Web application, Mobile vân vân và mây mây ha. Nhưng server chỉ có 1. Dù có bao nhiêu client đi nữa thì request cũng sẽ đổ về một hướng đó là
+Server ha. Có N client cùng gửi request lên server thì server phải xử lý N request đó cùng lúc, thì lúc đó chúng ta mới cần đi đo performance ha.
++ Lý do 2: Server (service) chính là nơi xử lý tất cả nghiệp vụ của một ứng dụng ha. Và nó là nơi giao tiếp với database.
+
+---> Ok chốt lại ha. Nói về performance test thì ta đang nói đến test performance ở phía server side. Và JMeter đang đóng vai trò giả lập client gửi request lên server. Các tool khác cũng thế thôi ha. Bản chất cũng là
+giả lập client gửi request lên server và thu thập các chỉ số để đánh giá server ha. Nắm rõ được bản chất thì sau này các bạn có tiếp cận với các công cụ khác thì cũng rất nhanh ha. Vì mindset nó chỉ có vậy thôi ha.
+Ví dụ: Công ty các bạn có phát triển một ứng dụng chạy trên mobile app chẳng hạn. Một ngày đẹp trời bạn được yêu cầu test performance cho cái app đó. Thì chuyện này bản chất là các bạn không phải đi test performance cho cái
+app đó. Mà công việc cần làm là các bạn phải đi test performance cho cái server mà cái app đó gọi đến. Lúc này các bạn cần giả lập các request mà cái app đó gửi lên server ha.
+Chỗ này có một cái lưu ý như sau để các bạn tránh nhầm lẫn ha. Nếu các bạn nhận được yêu cầu test xem cái app đó dùng có bị nóng máy không, có bị hao hụt pin nhanh hay không, khi cài lên thì các ứng dụng khác trong máy có
+xảy ra vấn đề gì hay không (chậm, treo,...) xung đột ứng dụng không. Thì đó không phải là performance test ha. Mà bản chất đó chỉ là một loại Non-Functional Testing thôi.
+Có thể gọi nó là Compatibility Testing (Kiểm thử tương thích).
+---> Chúng ta không cần quan tâm đến client đó là gì miễn nó có server để handle request. Thứ mà chúng ta quan tâm là client đó gửi request lên server bằng cách nào. Và JMeter có hỗ trợ giao thức đó hay không.
+---> Vì thế cho nên nếu mọi người gặp một câu hỏi “JMeter có hỗ trợ test mobile app hay không?”, thì chúng ta chỉ cần trả lời là chúng ta không test performance cho cái app đó. Mà chúng ta chỉ cần xem cách mà app đó
+gửi request lên server và chúng ta bắt chước cái cách mà app đó gửi request lên server; khi mà chúng ta bắt chước được thì chúng ta tự lại có thể dùng JMeter để test được cho server của app đó ha.
+
+3. JMeter có thể làm gì?
+Web application
++ HTTP
++ HTTPS
+--> HTML....
+Trong Automation thì mình có khái niệm là DOM.
+Web service (API)
++ HTTP, HTTPS
+--> JSON, XML,...
+-----> Chúng ta chủ yếu tập trung vào các giao thức này ha vì hiện tại 90% các ứng dụng dùng sẽ sử dụng giao thức này.
+Bên cạnh đó chúng ta có
++ FTP -> File transfer --> Driver lưu trữ file, truyền tải file
++ Mail
++ JDBC: Vì JMeter được viết bằng Java mà Java giao tiếp với CSDL bằng JDBC
++ Native command: Kiểu như mở CMD gõ ping 8.8.8.8 ...
+
+4. Cách chạy JMeter
++ UI Mode
+---> Là nút xanh xanh này các bạn bấm vào chạy
++ Chúng ta chỉ dùng UI Mode này để tạo và debug test plan thôi nhé. Ngay khi các bạn mở JMeter nó có một dòng warning rất rõ.
+
++ Non-UI: Đây là cách chạy đúng khi thực hiện run test performance ha.
+
+5. Kiến trúc của JMeter
+- Shortcut -> Hiện tại các bạn chỉ cần để ý giúp mình cái nút tam giác màu xanh này ha. Và nút hình cái chổi này thôi.
+- Về giao diện của JMeter thì nó sẽ được chia bố cục thành 2 phần
+ + Bên trái: Đây là phần mình cấu hình test plan. Toàn bộ các thành phần tạo test plan khi mình tạo ra thì nó đều nằm ở bên này.
+Ví dụ: Thread Group, Config Element,..
+ + Bên phải: Khi mà các bạn chọn vào bất kỳ một cái cấu hình nào đó thì tương ứng bên phải nó sẽ hiển thị các cấu hình chi tiết tương ứng vào config đó ha.
+Ví dụ: HTTP Request
+ --> Giới thiệu thôi, chưa demo
+- Test Plan: Một test script thì chỉ có một test plan duy nhất ha. Chúng ta không thể tạo thêm một test plan thứ 2 trong test plan khác ha.
+- Thread Group: Các bạn hiểu nó như là một Test Suite. Nơi nó tập hợp các test case của mọi người trong manual ấy. Vì lý thuyết của Thread Group thì nó viết là bản chất của một Thread Group là đại diện cho một nhóm các action
+hoặc một nhóm các user thực hiện các action nào đó. Và trong Test Plan bắt buộc phải có ít nhất 1 hoặc nhiều Thread Group.
+Ví dụ:
+ Thread Group 1: Login
+ Thread Group 2: Dashboard
+ Thread Group 3: Orders
+--> Và các test ở trong các Thread Group này khi mà run thì chúng sẽ được run song song cùng nhau.
+- Thread Group trong JMeter thì nó có 3 cái loại chính. Giống như automation test mọi người hay có các annotation kiểu như
++ @Before: Sẽ được thực thi trước khi các test scenario được chạy
++ @After: Sẽ được thực thi sau khi các scenario chạy xong
+Thì với JMeter cũng vậy, nó cũng cung cấp cho chúng ta các Thread Group để làm điều đó
++ setUp Thread Group
++ tearDown Thread Group
+--> Chỉ nói qua thôi, không đi quá chi tiết.
+
+---> Ok chúng ta quay lại với thành phần quan trọng nhất nào. Đó là Thread Group.
+Như có đề cập ở trên: 1 Test Plan nếu không có Thread Group nào thì Test Plan đó không dùng để làm gì cả. Nói cách khác là Test Plan đó không hợp lệ.
+--> OK khi mọi người đứng ở Thread Group và click chuột trái
+Thì tất cả mọi thứ quan trọng nhất của JMeter dùng để cấu hình Test Plan đều nằm trong này.
+Click chuột phải -> Đây là tất cả mọi thứ quan trọng nhất. Thì trong buổi hôm nay chúng ta sẽ cố gắng đi hết một lượt các thành phần này ha. Mình sẽ tìm hiểu sơ qua xem các component này nó là gì và nó dùng để giải quyết bài toán gì ha.
+--> Đầu tiên
+***** Sampler: Đây chính là request mà mình giả lập gửi lên server ha. Thì trong này chính là một danh sách các dòng mà JMeter hỗ trợ giả lập nha.
+ + HTTP Request này
+ + FTP Request này
+ + SMTP Request này (Mail server)
+--> Đâu chính là thành phần cốt lõi nhất của JMeter ha. Và mức độ quan trọng không kém so với Thread Group. Có thể hiểu đơn giản là:
+Mỗi Test Plan nếu không có Thread Group thì Test Plan đó không hợp lệ. Và Thread Group mà không chứa Sampler thì Thread Group đấy không dùng để làm gì cả. --> Vô dụng
+
+Ví dụ về trang chủ JMeter:
+https://jmeter.apache.org/index.html
+Nhìn thì chúng ta thấy có rất nhiều input ha. Nhưng thực tế chúng ta chỉ cần quan tâm đến một số thông tin sau
+protocol: https -> Default thì JMeter sẽ nhận là HTTP ha.
+Server Name or IP: jmeter.apache.org
+Port Number: HTTP -> 8080, HTTPS -> 443 -> Default thì JMeter sẽ tự nhận biết dựa vào protocol -> Điền cũng được mà không điền cũng được
+Method: GET
+Path: /index.html
+******* Trước khi run mọi người thêm giúp em một cái sau. Đứng ở Test Plan thêm giúp em View Results Tree
+--> Listener là một component giúp mọi người view kết quả test theo nhiều chiều view khác nhau ha. Dạng cây, dạng bảng, dạng biểu đồ. View Results Tree là dạng listener hữu ích nhất cho mọi người trong quá trình làm Test Plan ha.
+--> Ok đến đây chuẩn bị run ha. View Results Tree mình đang tạo ra ở level Test Plan thì nó sẽ áp dụng cho tất cả Sampler trong tất cả Thread Group ha. Còn nếu mọi người tạo View Results Tree trong một Thread Group thì nó
+chỉ áp dụng cho các Sampler ở trong Thread Group đó. Và nếu mọi người tạo ra dưới một Sampler thì nó chỉ áp dụng cho chính Sampler đó thôi ha.
+
+--> Ở đây ta thấy phạm vi áp dụng của nó là gì? Là áp dụng cho tất cả mọi request đúng dưới nó (nghĩa là đúng dưới level của nó nhé. Chứ không phải đứng theo vị trí trên giao diện đâu nhé. Mọi người lưu ý chỗ này).
+--> Demo kéo lên kéo xuống ......
+
+OK bây giờ mọi người click vào nút tam giác xem nó run ra giống như em không?.
+
+- Tiếp theo tương tự mọi người config thêm cho em một request thứ 2.
+https://www.apache.org/licenses/
+Mọi người cấu hình tương tự như overview nhé!
+--> Run thử xem ok như này chưa?
+- Tiếp theo mọi người cấu hình thêm cho em một request nữa nhé
+https://jmeter.apache.org/download_jmeter.cgi
+Thì ở đây mọi người setup nhanh bằng cách Ctrl + C -> Ctrl + V để copy nhanh Sampler và sửa lại ha. Đây chỉ khác nhau Path thôi nên chỉ cần đổi path là ok.
+-> Clear log cũ đi bằng cách bấm vào cái chổi hoặc Ctrl + E ha
+-> Run lại bằng cách bấm tam giác hoặc Ctrl + R nha
+
+****** Config Element
+--> Mọi người nhìn vào 3 request này thấy có điểm gì giống nhau không?
+-> HTTPS
+-> Domain
+Ví dụ trường hợp như sau. Mọi người làm Test Plan cho một sản phẩm nào đó chẳng hạn. Cấu hình xong tầm 100 request đi. Sau đây dev đổi domain đúng không. Thì mọi người cần phải làm sao?
+-> Đi vào từng request để đổi đúng không -> Vẫn work. Và cấu hình xong 100 request đó. Sang một ngày đẹp trời lại đổi domain.
+--> Có cách nào giúp chúng ta đỡ tốn công sức hơn không khi mà có sự thay đổi của các thông số được sử dụng nhiều nơi không???
+***** User Defined Variables -> Là nơi chúng ta khai báo tất cả các biến dùng chung. Và tương tự như Listener thì phạm vi áp dụng của thằng này cũng tương tự ha. Thông thường những thứ liên quan đến
+config thì ta nên để lên đầu cho dễ quản trị ha.
+protocol: https
+port: 443
+host: jmeter.apache.org
+--> Chúng ta đã định nghĩa được các biến rồi. Thì câu chuyện bây giờ là dùng các biến này bằng cách nào
+--> JMeter cung cấp cú pháp gọi biến như sau: ${varName}.
+Chúng ta cùng nhau sửa lại Test Plan nào
+------- Run lại --> Pass
+Đến đây ta thấy Test Plan bắt đầu tối ưu, dễ maintain hơn rồi ha. Nhưng chúng ta tiếp tục để ý là: Tất cả request trong Test Plan đều cần khai báo Protocol, Domain, Host.
+Vậy có cách nào chúng ta chỉ cần khai báo mặc định 1 lần thôi không. Để các request còn lại chỉ việc ăn theo mặc định cái chúng ta khai báo ban đầu. Và chúng ta chỉ cần thay đổi các thông số cần thay đổi thôi thì
+sẽ tối ưu hơn đúng không.
+
+***** HTTP Request Defaults
+--> Các bạn run thử xem work không?
+
+**** Logic Controller
+Ok như mọi người thấy thứ tự thực thi Sampler trong Thread Group là như nào?
+-> Thứ tự lần lượt từ trên xuống đúng không? Nhưng thực tế trong công việc chúng ta cần nhiều hơn thế. Chúng ta mong muốn thay đổi cách thực thi thứ tự của các sampler.
+Ví dụ Random, Song song,...
+Thì lúc này chúng ta cần đến sự trợ giúp của một component có tên là Logic Controller.
+-> Trong này chứa danh sách tất cả các Controller mà JMeter hỗ trợ ha. Chúng ta sẽ có một buổi chi tiết về các Controller hay sử dụng và cách dùng nó ha. Buổi hôm nay chúng ta đi overview thôi.
+Ví dụ em cần chạy random thứ tự các request chẳng hạn
+Click chuột phải -> Add -> Logic Controller -> Random Order Controller
+-> Run vài lần để thấy kết quả khác nhau
+
+*** Timer
+Mọi người để ý nhé: lúc mình chạy rõ ràng là JMeter chạy lần lượt các request theo logic sau
+Request 1 -> Chờ response1 -> Request 2 -> Response2 -> Request 3
+Thì mặc định của JMeter sẽ không có khoảng thời gian nào ngừng nghỉ giữa các request cả. Nhưng mà thực tế rõ ràng là người dùng họ vào Overview xong thì họ chưa hẳn vào License luôn đúng không.
+Mà họ sẽ chậm lại, ngừng một chút để đọc thông tin xem trang này có gì đã. Khoảng thời gian này gọi là Think Time -> Thời gian suy nghĩ -> Constant Timer
+--> Phạm vi áp dụng tương tự ha. Và Timer này sẽ hoạt động như thế nào?.
+Ở đây có 2 kịch bản xảy ra như sau. Mọi người thử chạy rồi trả lời xem kịch bản nào đúng ha:
+ Request 1 -> Timer -> Request 2 -> Timer -> Request 3 -> Timer ???
+Timer -> Request 1 -> Timer -> Request 2 -> Timer -> Request 3 ??? -> YES
+-> Timer sẽ chạy trước khi request bắt đầu
+
+**** Assertion
+--> Mọi người quan sát log thấy nó xanh xanh không?. Thì cảm quan theo logic bình thường thì mình tạm cho nó là Pass đúng không. Thì mặc định JMeter dựa vào status code để cho nó là pass hay fail ha.
+Chúng ta cũng sẽ có một buổi để đi chi tiết về vấn đề này.
+Mọi người làm Manual hay Automation cũng thế. Chúng ta luôn có Expected khi mà thực thi đúng không.
+Manual: Dùng mắt để check xem response trả về có đúng như mong muốn không
+Automation: Assert equals, Assert true,...
+Performance cũng thế đúng không. Mình gửi request đi thì cũng cần kiểm tra xem thế nào là một request pass. Để kiểm tra được thì JMeter cung cấp cho chúng ta một thành phần gọi là Assertions.
+Assertion thì chúng ta hay assert trên request đúng không. Thì theo phạm vi áp dụng của Assertion cũng như mấy config khác thôi. Vì là assert trên request nên chúng ta đứng ở request.
+Click chuột phải -> Add -> Assertions -> Response Assertion
+******** What can I do with it? ********
+--> Run -> Xanh Pass
+Còn nếu tài liệu thiết kế yêu cầu khi vào trang Overview phải có text
+**** Welcome JMeter ****
+Sửa assert
+--> Run fail.....
+
+8. Cấu trúc của một dự án Performance Test
+-> Phần này mọi người đọc qua để biết trước và chưa cần cấu hình theo vội ha. Các buổi học sau chúng ta sẽ vừa thực hành vừa back lại cấu trúc này và cấu hình theo nhé.
