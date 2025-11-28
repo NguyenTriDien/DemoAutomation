@@ -1,0 +1,50 @@
++ Bu?i hôm nay chúng ta s? tìm hi?u v? cách mà Jmeter d?c d? li?u t? CSV d? làm data test
++ Ðã g?i là Testing thì khái ni?m data test dã không còn gì xa l? v?i chúng ta
++ Manual -> Excell -> Copy ra s? d?ng
++ Automation -> Excell, CSV -> Dùng code d? d?c ra input vào test scenario
+Thì v?i Performance test cung v?y. Nó cung c?n có data test dây là di?u k th? tránh kh?i.
++ Chúng ta dang tìm hi?u v? Jmeter. Và th?ng này du?c g?i tool No code thì k dúng mà g?i là Lowcode m?i chu?n ha.
++ Cu?c d?i m?t Engineer thì chúng ta s? c? g?ng theo l? trình
+Full code (Code mi?t mài không ng?ng ngh?.  Nào chán code thì v?a khóc v?a code) -> Ði làm m?t th?i gian r?i thì c? g?ng gi?m code xu?ng chút (LowCode -> Ít code l?i) -> Manage,... No Code
+--> Ðây là câu chuy?n vui em chia s? v?i mn thôi ha -> Quay tr? l?i bài hôm nay 
++ Nhu tiêu d? bu?i h?c có d? c?p d?n CSV. Ch?c h?n nhi?u anh ch? cung bi?t nó là gì r?i. MÌnh cung nên di?m qua chút lí thuy?t v? CSV ha
+Ch?c h?n m?i ngu?i quá quen v?i vi?c d? li?u n?m trong table r?i dúng k
+-- Dòng d?u tiên là Header
+-- Các dòng ti?p theo g?i là line d? li?u
+-- M?i giá tr? du?c nam trong 1 Ô
+--> Th?ng CSV này b?n ch?t nó cung i chang nhu Table ha. Ch? khác m?i cái là d? li?u du?c phân cách nhau  b?i d?u (","). Ðôi khi có th? là ";"
+Table: 
+
+| Họ tên        | Tuổi | Địa chỉ      |
+|---------------|------|--------------|
+| Nguyễn Văn A  | 25   | Hà Nội       |
+| Trần Thị B    | 30   | Hồ Chí Minh  |
+
+-> CSV
+Họ tên,Tuổi,Địa chỉ
+Nguyễn Văn A,25,Hà Nội Trần Thị B,30,Hồ Chí Minh 
+
+Ví d? mình c?n test PT cho m?t API GET: /products-service/products?product-name=""?
+Thì khi làm TestPlan chúng ta s? làm nhu nào ? Chúng ta có nên fix c?ng product-name = m?t giá tr?  nào d?y k ??
+--> Không dúng không? Vì sao ???
+Chúng ta s? nhìn nh?n v? c? 2 góc nhìn
+Góc nhìn 1: behaviors ngu?i dùng --> T?t c? ngu?i dùng khi search product thì có cùng search cùng 1 tên s?n ph?m k ?
+-> Không: M?i ngu?i dùng s? có nhu c?u tìm ki?m s?n ph?m khác nhau
+Góc nhìn 2: behaviors h? th?ng
++ N?u chúng ta ch? ch?y test v?i 1 product name duy nh?t thì v?n d? gì x?y ra ????
+ - Nói v? cache: 
+                + Cache o redis
+                + Cache o database (Cach chiên luoc thuc thi)
+--> Response time nó không còn ph?n ánh dúng th?c t? trên production n?a dúng k?
+----------------------------------------------
+Ti?p theo chúng ta s? tìm hi?u v? cách mà Jmeter nó d?c CSV. -> CSV Data Set Config
+Tao thu muc
+Cau truc thu muc se giong nhu buoi 3 nhé ?
+performance
+            + TestPlan
+            + TestData
+                      + csv
+                      + image
+Ð?u tiên mn c?u hình giúp em m?t TestPlan don gian: Login: Api anhtester
++ HTTP Request Defaults
++ User Defined Variables
