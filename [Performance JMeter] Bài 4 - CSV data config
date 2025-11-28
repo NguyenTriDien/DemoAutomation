@@ -45,6 +45,39 @@ performance
             + TestData
                       + csv
                       + image
+--> T?o file csv user.csv trong thu m?c CSV
+--> rename user.txt user.csv
+
 Ð?u tiên mn c?u hình giúp em m?t TestPlan don gian: Login: Api anhtester
 + HTTP Request Defaults
 + User Defined Variables
++ View Results Tree
+---> Run xem ok chua
++ Thêm giúp em: CSV Data Set Config
+-> Browser file d?n file CSV v?a t?o
+-> Thay 2 giá tr? dang fix c?ng c?a username và password -> ${username}, ${password}
+-> Sua loop -> 10 xem nó dã nh?n 10 giá tr? chua
+--> Run -> OK
+Nhu moi nguoi thay khi ta thay các giá tr? c?a username và password -> Biên thì chúng ta th?y là giá tr? tu csv da dduoc doc vào rôi ha
+
+Thì t?i sao l?i dùng ${username} , ${password} nó l?i nh?n bi?t và l?y ra dduoc dúng giá tr? ha
+CSV có d?ng: username,password
+--> THì m?c d?nh c?a Jmeter khi t?o CSV Data Set Config
+--> Nh?n dòng header(Dòng d?u tiên) là danh sách các tên bi?n
+--> Dòng thu 2 tr? di s? là các d? li?u 
+-----> M?c d?nh nhu này  nó dã gi?i quy?t cho 80% nhu c?u s? d?ng CSV Data Set Config không c?n c?u hình gì nhi?u
+-----> Mn th?y r?t don gi?n dúng k ?.
+
+Sau dây chúng ra s? di vào chi ti?t các cái config c?a nó xem nó ho?t d?ng nhu nào và khi nào chúng ta c?n s?a config dó ha.
+
+📌 Các trường trong CSV Data Set Config -> Docs
+Demo 
+- Note: Luu í khi set dung d?c file mà duratioon dài -> Test dùng nhanh chua h?t duration -> H?t file
+📌 Xử lý dữ liệu đặc biệt trong CSV
+CSV -> Cách nhau v?i d?u ,. Tuy nhiên n?u dôi lúc du li?u c?a chúng ta nó d?c bi?t chút là nó có s?n d?u , trong d? li?u
+fullname,address
+Nguyen Van A,19, Nguyen Trai
+-> Jmeter s? nh?n adddresss = 19 -> Không dúng expect c?a chúng ta dúng k ?
+--> Ð? jmeter nh?n dúng chúng ta c?n làm nhu sau:
+fullname,address
+Nguyen Van A,"19, Nguyen Trai"
