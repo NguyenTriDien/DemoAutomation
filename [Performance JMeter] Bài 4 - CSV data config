@@ -45,34 +45,53 @@ performance
             + TestData
                       + csv
                       + image
---> T?o file csv user.csv trong thu m?c CSV
---> rename user.txt user.csv
+--> T?o file csv data.csv trong thu m?c CSV
+--> rename data.txt data.csv
 
-Ð?u tiên mn c?u hình giúp em m?t TestPlan don gian: Login: Api anhtester
-+ HTTP Request Defaults
-+ User Defined Variables
-+ View Results Tree
+fullname,address
+Nguyen Van A, 17 Le Duan
+Tran Thi B, 25 Nguyen Trai
+Le Van C, 88 Hai Ba Trung
+Pham Thi D, 12 Ly Thuong Kiet
+Hoang Van E, 45 Tran Hung Dao
+Nguyen Thi F, 101 Vo Thi Sau
+Do Van G, 33 Dien Bien Phu
+Bui Thi H, 77 Le Loi
+Vu Van I, 56 Nguyen Hue
+Dang Thi J, 19 Cach Mang Thang 8
+Nguyen Van K, 200 Hoang Hoa Tham
+Tran Thi L, 72 Bach Dang
+Le Van M, 5 Phan Chu Trinh
+Pham Thi N, 310 Tran Phu
+Hoang Van O, 66 Pasteur
+Nguyen Thi P, 142 Nguyen Dinh Chieu
+Do Van Q, 88 Ton Duc Thang
+Bui Thi R, 12 Vo Van Tan
+Vu Van S, 99 Le Thanh Ton
+Dang Thi T, 150 Nguyen Van Cu
+
+
+Ð?u tiên mn c?u hình giúp em m?t TestPlan don gian: Dummy sample
+{
+"fullname": "Nguyen Tri Dien",
+"address": "17 Le Duan"
+}
 ---> Run xem ok chua
 + Thêm giúp em: CSV Data Set Config
 -> Browser file d?n file CSV v?a t?o
--> Thay 2 giá tr? dang fix c?ng c?a username và password -> ${username}, ${password}
--> Sua loop -> 10 xem nó dã nh?n 10 giá tr? chua
+-> Thay 2 giá tr? dang fix c?ng c?a fullname và password -> ${fullname}, ${address}
+-> Sua loop -> 20 xem nó dã nh?n 20 giá tr? chua
 --> Run -> OK
 Nhu moi nguoi thay khi ta thay các giá tr? c?a username và password -> Biên thì chúng ta th?y là giá tr? tu csv da dduoc doc vào rôi ha
 
-Thì t?i sao l?i dùng ${username} , ${password} nó l?i nh?n bi?t và l?y ra dduoc dúng giá tr? ha
-CSV có d?ng: username,password
+Thì t?i sao l?i dùng ${fullname} , ${address} nó l?i nh?n bi?t và l?y ra dduoc dúng giá tr? ha
+CSV có d?ng: fullname,address
 --> THì m?c d?nh c?a Jmeter khi t?o CSV Data Set Config
 --> Nh?n dòng header(Dòng d?u tiên) là danh sách các tên bi?n
 --> Dòng thu 2 tr? di s? là các d? li?u 
 -----> M?c d?nh nhu này  nó dã gi?i quy?t cho 80% nhu c?u s? d?ng CSV Data Set Config không c?n c?u hình gì nhi?u
 -----> Mn th?y r?t don gi?n dúng k ?.
 
-Sau dây chúng ra s? di vào chi ti?t các cái config c?a nó xem nó ho?t d?ng nhu nào và khi nào chúng ta c?n s?a config dó ha.
-
-📌 Các trường trong CSV Data Set Config -> Docs
-Demo 
-- Note: Luu í khi set dung d?c file mà duratioon dài -> Test dùng nhanh chua h?t duration -> H?t file
 📌 Xử lý dữ liệu đặc biệt trong CSV
 TH1: Ch?a d?u ","
 CSV -> Cách nhau v?i d?u ,. Tuy nhiên n?u dôi lúc du li?u c?a chúng ta nó d?c bi?t chút là nó có s?n d?u , trong d? li?u
@@ -107,3 +126,9 @@ Tuy nhiên ngoài cách x? lí nhu trên thì em có m?t l?i khuyên ho?c Bestra
 Thì chúng ta có th? làm cách don gi?n hon là chu?n hóa d? li?u tru?c khi vào ch?y test thì s? d? dàng hon.
 Ví d? Th1 -> Thay vì dóng nháy -> Ta d?i d?u "," -? D?u ":", "/" di cho nhàn d? ph?i c?ng k?nh
 "" -> Thay b?ng ' cho kh?e
+
+📌 Các trường trong CSV Data Set Config -> Docs
+Sau dây chúng ra s? di vào chi ti?t các cái config c?a nó xem nó ho?t d?ng nhu nào và khi nào chúng ta c?n s?a config dó ha.
+Demo 
+- Note: Luu í khi set dung d?c file mà duratioon dài -> Test dùng nhanh chua h?t duration -> H?t file
+Chúng ta nên t?o CSV d?y d? header d? do ph?i di?n tên bi?n ph?c t?p
