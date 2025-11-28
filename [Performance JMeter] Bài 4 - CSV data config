@@ -74,10 +74,36 @@ Sau dây chúng ra s? di vào chi ti?t các cái config c?a nó xem nó ho?t d?n
 Demo 
 - Note: Luu í khi set dung d?c file mà duratioon dài -> Test dùng nhanh chua h?t duration -> H?t file
 📌 Xử lý dữ liệu đặc biệt trong CSV
+TH1: Ch?a d?u ","
 CSV -> Cách nhau v?i d?u ,. Tuy nhiên n?u dôi lúc du li?u c?a chúng ta nó d?c bi?t chút là nó có s?n d?u , trong d? li?u
 fullname,address
 Nguyen Van A,19, Nguyen Trai
+-> Run -> Not OK
 -> Jmeter s? nh?n adddresss = 19 -> Không dúng expect c?a chúng ta dúng k ?
---> Ð? jmeter nh?n dúng chúng ta c?n làm nhu sau:
+--> Ð? jmeter nh?n dúng chúng ta c?n làm nhu sau: Boc du lieu trong ""
 fullname,address
 Nguyen Van A,"19, Nguyen Trai"
+Allow quoted data -> True
+-> Run -> OK
+--> Chúng ta dã có th? x? lí du?c d?u , r?i ha
+
+TH2: Chua c? d?u , và d?u " thì sao?
+fullname,address
+Nguyen Van A,19, "Nguyen Trai"
+-> Áp d?ng cách cu:
+fullname,address
+Nguyen Van A,"19, "Nguyen Trai""
+-> Run : EOF -> Jmeter không hi?u nên không d?c dudocj giá tr?
+Cách x? lý
+ + Ðóng nháy c? c?m giá tr? nhu cách làm v?i d?u ","
+ + Trong giá tr? ch? nào có " -> double lên ""
+fullname,address
+Nguyen Van A,"19, ""Nguyen Trai"""
+-> Run OK
+
+-> Thì 2 ví d? trên là 2 tru?ng h?p ph? bi?n nh?t trong cs có th? g?p ph?i ha.
+
+Tuy nhiên ngoài cách x? lí nhu trên thì em có m?t l?i khuyên ho?c Bestractice cho m?i ng?i nhu này. Thay vì chúng ta phai di x? lí d?ng d? li?u dac bi?t dó
+Thì chúng ta có th? làm cách don gi?n hon là chu?n hóa d? li?u tru?c khi vào ch?y test thì s? d? dàng hon.
+Ví d? Th1 -> Thay vì dóng nháy -> Ta d?i d?u "," -? D?u ":", "/" di cho nhàn d? ph?i c?ng k?nh
+"" -> Thay b?ng ' cho kh?e
