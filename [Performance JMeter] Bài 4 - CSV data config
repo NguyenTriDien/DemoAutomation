@@ -1,134 +1,158 @@
-+ Bu?i hôm nay chúng ta s? tìm hi?u v? cách mà Jmeter d?c d? li?u t? CSV d? làm data test
-+ Ðã g?i là Testing thì khái ni?m data test dã không còn gì xa l? v?i chúng ta
-+ Manual -> Excell -> Copy ra s? d?ng
-+ Automation -> Excell, CSV -> Dùng code d? d?c ra input vào test scenario
-Thì v?i Performance test cung v?y. Nó cung c?n có data test dây là di?u k th? tránh kh?i.
-+ Chúng ta dang tìm hi?u v? Jmeter. Và th?ng này du?c g?i tool No code thì k dúng mà g?i là Lowcode m?i chu?n ha.
-+ Cu?c d?i m?t Engineer thì chúng ta s? c? g?ng theo l? trình
-Full code (Code mi?t mài không ng?ng ngh?.  Nào chán code thì v?a khóc v?a code) -> Ði làm m?t th?i gian r?i thì c? g?ng gi?m code xu?ng chút (LowCode -> Ít code l?i) -> Manage,... No Code
---> Ðây là câu chuy?n vui em chia s? v?i mn thôi ha -> Quay tr? l?i bài hôm nay 
-+ Nhu tiêu d? bu?i h?c có d? c?p d?n CSV. Ch?c h?n nhi?u anh ch? cung bi?t nó là gì r?i. MÌnh cung nên di?m qua chút lí thuy?t v? CSV ha
-Ch?c h?n m?i ngu?i quá quen v?i vi?c d? li?u n?m trong table r?i dúng k
--- Dòng d?u tiên là Header
--- Các dòng ti?p theo g?i là line d? li?u
--- M?i giá tr? du?c nam trong 1 Ô
---> Th?ng CSV này b?n ch?t nó cung i chang nhu Table ha. Ch? khác m?i cái là d? li?u du?c phân cách nhau  b?i d?u (","). Ðôi khi có th? là ";"
-Table: 
+Buổi hôm nay chúng ta sẽ tìm hiểu về cách mà JMeter đọc dữ liệu từ CSV để làm data test.
 
+Đã gọi là Testing thì khái niệm data test đã không còn gì xa lạ với chúng ta.
+Manual → Excel → Copy ra sử dụng
+Automation → Excel, CSV → Dùng code để đọc ra và input vào test scenario
+Với Performance Test cũng vậy. Nó cũng cần có data test — đây là điều không thể tránh khỏi.
+
+Chúng ta đang tìm hiểu về JMeter. Công cụ này được gọi là No-code thì không đúng, gọi là Low-code mới chuẩn.
+Cuộc đời một Engineer thì chúng ta sẽ cố gắng theo lộ trình:
+Full-code (Code miệt mài không ngừng nghỉ. Khi chán code thì vừa khóc vừa code) → Đi làm một thời gian rồi cố gắng giảm code xuống chút (Low-code → Ít code lại) → Manage → No-code.
+→ Đây là câu chuyện vui em chia sẻ với mọi người thôi ha → Quay trở lại bài hôm nay.
+
+Như tiêu đề buổi học có đề cập đến CSV. Chắc hẳn nhiều anh chị cũng biết nó là gì rồi. Mình cũng nên điểm qua chút lý thuyết về CSV ha.
+
+Chắc hẳn mọi người quá quen với việc dữ liệu nằm trong table rồi đúng không?
+
+Dòng đầu tiên là Header
+Các dòng tiếp theo gọi là line dữ liệu
+Mỗi giá trị được nằm trong 1 ô
+
+→ File CSV về bản chất cũng y chang như Table. Chỉ khác là dữ liệu được phân cách nhau bởi dấu “,”. Đôi khi có thể là “;”.
+
+Table
 | Họ tên        | Tuổi | Địa chỉ      |
 |---------------|------|--------------|
 | Nguyễn Văn A  | 25   | Hà Nội       |
 | Trần Thị B    | 30   | Hồ Chí Minh  |
 
--> CSV
+CSV
 Họ tên,Tuổi,Địa chỉ
-Nguyễn Văn A,25,Hà Nội Trần Thị B,30,Hồ Chí Minh 
+Nguyễn Văn A,25,Hà Nội
+Trần Thị B,30,Hồ Chí Minh
 
-Ví d? mình c?n test PT cho m?t API GET: /products-service/products?product-name=""?
-Thì khi làm TestPlan chúng ta s? làm nhu nào ? Chúng ta có nên fix c?ng product-name = m?t giá tr?  nào d?y k ??
---> Không dúng không? Vì sao ???
-Chúng ta s? nhìn nh?n v? c? 2 góc nhìn
-Góc nhìn 1: behaviors ngu?i dùng --> T?t c? ngu?i dùng khi search product thì có cùng search cùng 1 tên s?n ph?m k ?
--> Không: M?i ngu?i dùng s? có nhu c?u tìm ki?m s?n ph?m khác nhau
-Góc nhìn 2: behaviors h? th?ng
-+ N?u chúng ta ch? ch?y test v?i 1 product name duy nh?t thì v?n d? gì x?y ra ????
- - Nói v? cache: 
-                + Cache o redis
-                + Cache o database (Cach chiên luoc thuc thi)
---> Response time nó không còn ph?n ánh dúng th?c t? trên production n?a dúng k?
-----------------------------------------------
-Ti?p theo chúng ta s? tìm hi?u v? cách mà Jmeter nó d?c CSV. -> CSV Data Set Config
-Tao thu muc
-Cau truc thu muc se giong nhu buoi 3 nhé ?
+
+Ví dụ mình cần test PT cho một API GET:
+/products-service/products?product-name=""
+
+
+Khi làm TestPlan chúng ta sẽ làm như nào? Có nên fix cứng product-name = một giá trị nào đó không?
+→ Không đúng. Vì sao?
+
+Chúng ta sẽ nhìn nhận ở 2 góc nhìn:
+Góc nhìn 1: Hành vi người dùng
+Tất cả người dùng khi search product có tìm cùng một tên sản phẩm không?
+→ Không. Mỗi người có nhu cầu tìm kiếm sản phẩm khác nhau.
+
+Góc nhìn 2: Hành vi hệ thống
+Nếu chúng ta chỉ chạy test với 1 product name duy nhất thì vấn đề gì xảy ra?
+Nói về cache:
++ Cache ở Redis
++ Cache ở Database (các chiến lược thực thi)
+→ Response time sẽ không phản ánh đúng thực tế trên production nữa?
+
+Tiếp theo chúng ta tìm hiểu cách JMeter đọc CSV → CSV Data Set Config
+Tạo thư mục — cấu trúc giống như buổi 3:
+
 performance
-            + TestPlan
-            + TestData
-                      + csv
-                      + image
---> T?o file csv data.csv trong thu m?c CSV
---> rename data.txt data.csv
+    + TestPlan
+    + TestData
+        + csv
+        + image
+
+→ Tạo file CSV data.csv trong thư mục csv
+→ hoặc rename từ data.txt → data.csv
+Ví dụ dữ liệu:
 
 fullname,address
-Nguyen Van A, 17 Le Duan
-Tran Thi B, 25 Nguyen Trai
-Le Van C, 88 Hai Ba Trung
-Pham Thi D, 12 Ly Thuong Kiet
-Hoang Van E, 45 Tran Hung Dao
-Nguyen Thi F, 101 Vo Thi Sau
-Do Van G, 33 Dien Bien Phu
-Bui Thi H, 77 Le Loi
-Vu Van I, 56 Nguyen Hue
-Dang Thi J, 19 Cach Mang Thang 8
-Nguyen Van K, 200 Hoang Hoa Tham
-Tran Thi L, 72 Bach Dang
-Le Van M, 5 Phan Chu Trinh
-Pham Thi N, 310 Tran Phu
-Hoang Van O, 66 Pasteur
-Nguyen Thi P, 142 Nguyen Dinh Chieu
-Do Van Q, 88 Ton Duc Thang
-Bui Thi R, 12 Vo Van Tan
-Vu Van S, 99 Le Thanh Ton
-Dang Thi T, 150 Nguyen Van Cu
+Nguyen Van A,17 Le Duan
+Tran Thi B,25 Nguyen Trai
+Le Van C,88 Hai Ba Trung
+Pham Thi D,12 Ly Thuong Kiet
+Hoang Van E,45 Tran Hung Dao
+Nguyen Thi F,101 Vo Thi Sau
+Do Van G,33 Dien Bien Phu
+Bui Thi H,77 Le Loi
+Vu Van I,56 Nguyen Hue
+Dang Thi J,19 Cach Mang Thang 8
+Nguyen Van K,200 Hoang Hoa Tham
+Tran Thi L,72 Bach Dang
+Le Van M,5 Phan Chu Trinh
+Pham Thi N,310 Tran Phu
+Hoang Van O,66 Pasteur
+Nguyen Thi P,142 Nguyen Dinh Chieu
+Do Van Q,88 Ton Duc Thang
+Bui Thi R,12 Vo Van Tan
+Vu Van S,99 Le Thanh Ton
+Dang Thi T,150 Nguyen Van Cu
 
-
-Ð?u tiên mn c?u hình giúp em m?t TestPlan don gian: Dummy sample
+Cấu hình TestPlan đơn giản: Dummy Sample
 {
-"fullname": "Nguyen Tri Dien",
-"address": "17 Le Duan"
+  "fullname": "Nguyen Tri Dien",
+  "address": "17 Le Duan"
 }
----> Run xem ok chua
-+ Thêm giúp em: CSV Data Set Config
--> Browser file d?n file CSV v?a t?o
--> Thay 2 giá tr? dang fix c?ng c?a fullname và password -> ${fullname}, ${address}
--> Sua loop -> 20 xem nó dã nh?n 20 giá tr? chua
---> Run -> OK
-Nhu moi nguoi thay khi ta thay các giá tr? c?a username và password -> Biên thì chúng ta th?y là giá tr? tu csv da dduoc doc vào rôi ha
 
-Thì t?i sao l?i dùng ${fullname} , ${address} nó l?i nh?n bi?t và l?y ra dduoc dúng giá tr? ha
-CSV có d?ng: fullname,address
---> THì m?c d?nh c?a Jmeter khi t?o CSV Data Set Config
---> Nh?n dòng header(Dòng d?u tiên) là danh sách các tên bi?n
---> Dòng thu 2 tr? di s? là các d? li?u 
------> M?c d?nh nhu này  nó dã gi?i quy?t cho 80% nhu c?u s? d?ng CSV Data Set Config không c?n c?u hình gì nhi?u
------> Mn th?y r?t don gi?n dúng k ?.
+→ Run xem OK chưa.
+Thêm CSV Data Set Config
+Browser file → chọn file CSV
+
+Thay 2 giá trị fix cứng fullname và address → ${fullname}, ${address}
+Sửa loop → 20 để kiểm tra đọc 20 dòng thêm counter
+
+→ Run → OK
+Như mọi người thấy khi ta thay các giá trị fullname và address sang biến thì JMeter đã đọc đúng giá trị từ CSV.
+
+Tại sao ${fullname}, ${address} lại lấy được đúng dữ liệu?
+CSV có dòng:
+fullname,address
+→ Mặc định JMeter khi tạo CSV Data Set Config:
+Dòng đầu tiên header được xem là danh sách tên biến
+Dòng thứ 2 trở đi là dữ liệu
+→ Mặc định như vậy đã giải quyết 80% trường hợp sử dụng CSV Data Set Config.
+→ Rất đơn giản đúng không?
 
 📌 Xử lý dữ liệu đặc biệt trong CSV
-TH1: Ch?a d?u ","
-CSV -> Cách nhau v?i d?u ,. Tuy nhiên n?u dôi lúc du li?u c?a chúng ta nó d?c bi?t chút là nó có s?n d?u , trong d? li?u
+TH1: Chứa dấu “,” trong dữ liệu
+Ví dụ:
+
 fullname,address
 Nguyen Van A,19, Nguyen Trai
--> Run -> Not OK
--> Jmeter s? nh?n adddresss = 19 -> Không dúng expect c?a chúng ta dúng k ?
---> Ð? jmeter nh?n dúng chúng ta c?n làm nhu sau: Boc du lieu trong ""
+→ Run → Not OK
+→ JMeter sẽ nhận address = 19 (sai mong đợi)
+
+Cách xử lý:
+Bọc dữ liệu trong dấu ""
 fullname,address
 Nguyen Van A,"19, Nguyen Trai"
-Allow quoted data -> True
--> Run -> OK
---> Chúng ta dã có th? x? lí du?c d?u , r?i ha
+Bật:
+Allow quoted data = True
+→ Run → OK
 
-TH2: Chua c? d?u , và d?u " thì sao?
+TH2: Chứa cả dấu , và dấu "
+Ví dụ:
 fullname,address
 Nguyen Van A,19, "Nguyen Trai"
--> Áp d?ng cách cu:
-fullname,address
+Nếu áp dụng TH1:
 Nguyen Van A,"19, "Nguyen Trai""
--> Run : EOF -> Jmeter không hi?u nên không d?c dudocj giá tr?
-Cách x? lý
- + Ðóng nháy c? c?m giá tr? nhu cách làm v?i d?u ","
- + Trong giá tr? ch? nào có " -> double lên ""
+→ Run → Lỗi EOF vì JMeter không đọc được.
+Cách xử lý đúng:
+Bọc toàn bộ giá trị bằng "
+Bất kỳ dấu " bên trong phải double lên thành ""
+Ví dụ:
+
 fullname,address
 Nguyen Van A,"19, ""Nguyen Trai"""
--> Run OK
 
--> Thì 2 ví d? trên là 2 tru?ng h?p ph? bi?n nh?t trong cs có th? g?p ph?i ha.
+→ Run OK.
 
-Tuy nhiên ngoài cách x? lí nhu trên thì em có m?t l?i khuyên ho?c Bestractice cho m?i ng?i nhu này. Thay vì chúng ta phai di x? lí d?ng d? li?u dac bi?t dó
-Thì chúng ta có th? làm cách don gi?n hon là chu?n hóa d? li?u tru?c khi vào ch?y test thì s? d? dàng hon.
-Ví d? Th1 -> Thay vì dóng nháy -> Ta d?i d?u "," -? D?u ":", "/" di cho nhàn d? ph?i c?ng k?nh
-"" -> Thay b?ng ' cho kh?e
-
-📌 Các trường trong CSV Data Set Config -> Docs
-Sau dây chúng ra s? di vào chi ti?t các cái config c?a nó xem nó ho?t d?ng nhu nào và khi nào chúng ta c?n s?a config dó ha.
-Demo 
-- Note: Luu í khi set dung d?c file mà duratioon dài -> Test dùng nhanh chua h?t duration -> H?t file
-Chúng ta nên t?o CSV d?y d? header d? do ph?i di?n tên bi?n ph?c t?p
+Đây là 2 trường hợp phổ biến nhất trong CSV.
+Best Practice – Chuẩn hóa dữ liệu trước khi test
+Thay vì phải xử lý dữ liệu đặc biệt:
+TH1 → thay dấu , bằng : hoặc /
+Dấu " → thay bằng '
+→ Đỡ phức tạp, dễ quản lý hơn.
+📌 Các trường trong CSV Data Set Config
+(Phần docs sẽ demo trong bài học.)
+Note:
+Khi dùng CSV mà test duration dài → JMeter đọc hết file trước → lỗi.
+→ Nên tạo CSV đủ dữ liệu và đủ header để tránh phải điền biến phức tạp.
