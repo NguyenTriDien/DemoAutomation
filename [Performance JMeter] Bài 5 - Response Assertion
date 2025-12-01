@@ -1,1 +1,174 @@
-a
+Mở đầu: Hôm nay chúng ta đến với buổi 5 để tìm hiểu cách để verify request gửi đi là pass hay fail.
+
+Performance test cũng giống như các testing type khác ha.
+Một testcase thì cơ bản nhất nó phải có 2 thành phần thì mới được gọi là testcase
+
++ Action -> Là các bạn thực hiện các cái hành động để thao tác
++ Verify -> Là mình check lại cái kết quả của hành động mình thực hiện
+
+- Manual: -> Dùng mắt mình nhìn để kiểm tra
+- Automation: -> Dùng code Assert.assertEquals...
+
+Thì với performance cũng thế chúng ta cũng sẽ phải verify lại cái request mà chúng ta gửi đi xem đã đúng expect như mình mong muốn hay chưa.
+Chúng ta đang tìm hiểu về Jmeter. Và nó cũng cấp cho chúng ta một công cụ có tên là Response Assertion.
+
+Component về phạm vi áp dụng của nó cũng giống như các config element khác. Áp dụng cho các sample Ngang hàng hoặc đứng dưới mình.
+Tuy nhiên thực tế đi làm. Chúng ta nên áp dụng cho từng Sample mà chúng ta muốn. Chứ ít khi áp dụng cho toàn bộ TestPlan trừ trường hợp quá đặc biệt ha.
+
+- Nhờ mn mở Jmeter lên giúp mình. Cấu hình cho mình TestPlan đơn giản cho API sau.
+POST xxxxx/login
+     {
+"username":"",
+"password": ""
+}
+
+Và đảm bảo run thành công trả ra một chuỗi token.
+
+Sau đấy duplicate cái request vừa cấu hình trên. Và sửa password -> Bất kì để password sai
+Trước khi call thì chắc chắn mong muốn của chúng ta rõ ràng là password sai thì request phải lỗi đúng k.
+-> Call xem thế  nào -> Dù Response k còn trả ra Token nhưng vẫn xanh đúng k?
+--> Đến hiện tại thì Jmeter vẫn chưa có dấu hiệu nào để phân biệt giúp chúng ta
+
+-> Nói về xanh đỏ của Jmeter.
+Mặc định Jmeter đang nhận biết Request đó là Pass hay Fail dựa vào Status code ha.
+
+Điểm qua chút về các loại status code nào?
+
+1xx: Information (100, 101, ....)
+2xx: Success (200, 201, 203, 204)
+3xx: Redirect (301, 302, ...)
+4xx: Client erors (400 (Bad request), 401(Authent), 403(Author), 404(NotFound))
+5xx: Server errors (500, 503....)
+--> Thì với performance test thì thông thường thôi ha. Chúng ta sẽ quan tâm nhiều đến lỗi này. Tuy nhiên không đồng nghĩa các lỗi khác chúng ta bỏ qua.
+Tùy thuộc vào hoàn cảnh và ngữ cảnh thì mới quyết định được ha.
+
+Quay lại với vấn đề của mình. Thì mặc định Jmeter nó sẽ xem các status code 1xx, 2xx, 3xx là pass nếu như không có tác động gì thêm.
+Thì với bài toán của mình rõ ràng là nếu chỉ dựa vào status code thì không đủ đúng k. Vì rõ ràng password fail mà vẫn pass thì không đúng expect của mình.
+Để làm được việc verify đúng như mong muốn thì chúng ta cần đến Response Assertion
+Mọi người thêm giúp em Add ->......
+
+Mọi người chưa vội run . Mình đi qua chút lí thuyết của phần quan trọng nhất của Response Assertion chút ha đó là  Pattern Matching Rules -> Quy tắc so khớp
+
+Có 4 rules quan trọng nhất ha: Contains, Matches, Equals, Substring
+Chúng ta chia thành 2 nhóm.
+
+Nhóm 1: Contains = SubString -> Chứa chuỗi
+Nhóm 2: Equals = Matchs -> Khớp toàn bộ không hơn không kém
+
+
+-> Công dụng nó giống nhau vậy tại sao cần tận 4 rules ha. Mà không sử dụng 2 thôi cho tiện.
+
+Equals - Substring: Nó dùng raw text (Plain text) để so sánh -> Có nghĩa là nó dùng so sánh text đơn thuần thôi. Không có gì đặc biệt cả. Chỉ có text so sánh với text
+
+Contains, Matches: Regex(Regular expression) để so sánh.
+
+Hiểu đơn giản như này. Regex, viết tắt của Regular Expression (biểu thức chính quy), là các mẫu (pattern) dùng để tìm/thay thế (Find/Replace) và thao tác với chuỗi văn bản.
+Ví dụ để tìm kiếm và thao tác các dữ liệu trong CSDL thì các bạn dùng SQL để thực hiện. Thì với các văn bản text thuần túy thì dùng regex để query ha.
+
+Ví dụ về lí thuyết và ví dụ về regext thì mọi người về tìm hiểu thêm nhá. Và nếu hiểu được càng nhiều thì càng tốt. Và hiện tại công cụ AI nó rất nhiều rồi
+thì mn chỉ cần ném đoạn Text và giá trị muốn trích xuất vào và bảo nó suggest cho mọi người công thức Regext liền ha.
+
+Contains và Matches sẽ làm như nào.
+
+Chúng ta có:
+
++ Response
++ Input check
+
+Nhóm 1: So sánh luôn Input ~~ Response
+
+Nhóm 2: Response -> Input(Regex) -> value ~~ Response
+
+Trên đấy là lí thuyết của Matching rules ha. Bây giờ chúng ta vào thực hành xem nó work như thế nào ha.
+
+
+Mn tạm thời disable cái 2 request get token trên giúp em. Và thêm giúp em một cái DummySampler nhá.
+
+Demo về Raw text:
+
+Equals -> Dummy sample
+Run -> Pass
+(Xóa một dấu .) -> Run false
+
+Substring -> Run -> Pass
+Thay bằng số -> Run false
+
+Demo về Regex
+
+Thay response Dummy Sampler :
+{
+ "access_token": "123456789"
+}
+
+Contains: "access_token": "(.+?)"
+-> Test công thức Regex ...
+
+Matches: -> Ít dùng thì mọi  người đọc thêm nhá. 
+Còn NOT -> Phủ định lại
+Còn Or -> Hoặc
+Chứa A hoặc B
+
+-- Jmeter cho phép chúng ta so sánh nhiều điều kiện. Muốn thêm một điều kiện nào thì mọi người bấm Add và thêm điều kiện tương ứng
+
+Ví dụ về SubString
+Không tích vào OR -> And
+
+AND -> Tất cả điều kiện phải True -> Pass
+Response phải chứa cả token và gì gì đó
+--> Pass
+Nết một điều kiện False -> False
+Ví dụ: ..........
+
+OR -> Chỉ cần một điều kiện True -> Pass
+
+
+---> Bây giờ các bạn quay lại giải quyết bài toán của mình được chưa ạ. Ở đây chúng ta cần thêm Response Assertion như nào ạ.
+
+Cách 1: Response phải chứa chuỗi "token":
+Cách 2: Response không chứa chuỗi "errors":
+Cách 3: Dùng Contains và input vào regex "token": "(.+?)"
+
+--> Có rất nhiều cách để verify Response
+
+-----------------------------------------------------------------------
+
+OK này giờ chúng ta đang thực hiện verify ở phần Response body.
+
+Một request rõ ràng nó có nhiều thành phần đúng k ạ. Và đôi lúc chúng ta cần verify ở phần khác mà không phải mỗi Response Body.
+
+Request Body -> Request Data
+Request Header
+Response Body
+Response Header  
+Response Mesage
+Response Code
+
+--> Để verify các thông tin ở cách thành phần này thì cũng rất đơn giản. Jmeter cung cấp hết các option cho chúng ta rồi ha
+
+Mọi người muốn verify thông tin ở phần nào chỉ việc tích vào phần đó thôi ha. Phần này em xin phép thôi không thực hành nhá. Mọi người thực hành thêm nhá
+
+Ở đây có một option khá đặc biệt đó là Ignore Status
+Thì thằng này có nghĩa là Khi mọi người tạo Response assertion và không thay đổi gì thêm và tích vào nó 
+-> Request này luôn luôn Pass. Vì nó không còn care đến Status trả ra là gì nữa. Option này thì áp dụng cho việc mọi người cần call sang một request khác của đối tác
+chẳng hạn mà mình không cần care đến kết quả của nó. Nhưng nó vẫn nằm trong luồng của mình thì mình cấu hình vào để mô phỏng giống như người dùng. Thì mn có thể 
+thêm ignore status của request đó đi coi như nó luôn pass.
+
+Còn các option còn lại ít khi dùng đến mn có thể đọc thêm sau nhá.
+
+------------------------------------------------------------------------
+
+Ok chúng ta đến với cấu hình tiếp nằm ngày trên ha. Là Apply to
+
+Main Request -> Sub Request 1
+             -> Sub Request 2
+Mặc định của Jmeter thì nó đã tích ở Main request rồi. Mà hầu hết request của mình thì ít khi có Redirect. Còn trường hợp nào đặc biệt có Redirect thì mọi người tích vào 
+Main sample and Sub sampler -> Áp dụng cho cả cha cả con.
+Sub sample only -> Chỉ áp dụng cho con thôi
+
+Demo Dummy Sample
+
+
+Bestpractice:
+
+Thì với Assertion thì bản chất mình nên dùng ít nhất có thể ha. Nếu các request nào không đặc biệt mà chỉ cần status code = 200 là pass rồi thì mình k nên thêm gì nữa
+Vì càng nhiều Assertion thì TestPlan của mình càng chậm vì cần phải Assertion nữa ha.
