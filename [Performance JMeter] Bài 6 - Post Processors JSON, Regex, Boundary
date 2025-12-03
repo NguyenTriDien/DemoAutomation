@@ -20,7 +20,9 @@ Chúng ta sẽ có một bài toán như sau
 
 Buổi học hôm nay chúng ta sẽ tìm cách thực hiện việc đó. Và chúng ta xem có bao nhiêu cách để giải quyết bài toán trên ha.
 
-Ok đến với nội dung đầu tiên của buổi hôm nay đó là JSON Extractor.
+Ok đến với nội dung đầu tiên của buổi hôm nay đó là  Post Processors JSON Extractor.
+Post Processors -> Làm gì đó sau khi Request được gửi đi và trả về Response
+Pre Processors -> Làm gì đó trước khi Request được gửi đi
 
 - Đầu tiên chúng ta sẽ tìm hiểu xem như thế nào là JSON. Chắc hẳn mọi người ở đây ai cũng từng thấy và làm việc với Json rồi ha. Đặc biệt là các anh chị từng làm Automation API hoặc là các bạn làm với những API chuẩn restful api
 
@@ -35,6 +37,9 @@ Các cặp phân tách bằng dấu ,
 
 -> Ok lý thuyết để nhận dạng như nào là Json ha. Bây giờ chúng ta sẽ tìm hiểu về cách trích xuất giá trị từ đoạn Json
 Với Database chúng ta dùng SQL, Text đơn thuần có thể dùng Regex, Với Json thì chúng ta có một cách nhanh hơn và dễ dàng hơn đó là JsonPath
+
+-> Mọi người nắm vững JsonPath sau này có làm Automation Api thì cũng rất dễ ha. Nó giống như việc mọi người bắt Locator (Xpath, Css,..) trong Automation UI vậy đó
+
 
 Mọi người vào trang : https://jsonpath.com/
 
