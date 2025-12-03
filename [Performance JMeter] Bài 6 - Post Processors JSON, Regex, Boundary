@@ -49,9 +49,7 @@ Xuống phần bài tập
 
 OK -> Thì như mọi người thấy JSONPATH nó chỉ giúp mọi người extract giá trị từ ResponseBody và định dạng Là Json đúng k. Vậy nếu chúng ta cần extract từ các thành phần khác chẳng hạn:
 
-Request Body -> Request Data
-Request Header
-Response Body
+Response Body -> Html or XML
 Response Header  
 Response Mesage
 Response Code
