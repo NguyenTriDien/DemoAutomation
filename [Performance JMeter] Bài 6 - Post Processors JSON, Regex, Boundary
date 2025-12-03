@@ -47,3 +47,23 @@ Xuống phần bài tập
 -> Done 
 -> Quay lại giải quyết bài toán đầu buổi học.
 
+OK -> Thì như mọi người thấy JSONPATH nó chỉ giúp mọi người extract giá trị từ ResponseBody và định dạng Là Json đúng k. Vậy nếu chúng ta cần extract từ các thành phần khác chẳng hạn:
+
+Request Body -> Request Data
+Request Header
+Response Body
+Response Header  
+Response Mesage
+Response Code
+
+--> JSONPATH không đáp ứng được. Và để giải quyết bài toán này chúng ta cần đến sự trợ giúp của một POST processor khác. Jmeter cung cấp thêm cho chúng ta 2  công cụ mạnh mẽ khác có tên lần lượt là 
+Regular Expression Extractor và Boundary Extractor. Nhẽ ra phần này khóa trước thì em tách thành buổi khác tuy nhiên sau đó em nghĩ lại mình không cần tách vì lý thuyết thì có thể rất nhiều nhưng
+trong phạm vi áp dụng vào jmeter thì nó không thực sự quá nhiều
+
+Đầu tiên đến với Regular Expression Extractor -> Dùng regex để extract. Thì phần này về lí thuyết và cú pháp của nó mọi người đọc thêm trên tài liệu và trên google nhé.
+Ở phần này em sẽ cung cấp cho mọi người một công thức mà sẽ giải quyết được 80% bài toán: LeftText(.*?)RightText -> Trái phải. Còn sau mn đi làm gặp các case trích xuất phức tạp hơn thì mình có thể
+nhắn lên nhóm trao đổi nhé ạ. Còn trong khóa học em sẽ có gắng chắt lọc để mn mất ít công sức nhất nhưng đạt nhiều value nhất. 
+NGuyên tắc 80 20. Tuy nhiên case nào đặc biệt nhưng hay gặp em cũng sẽ có trách nhiệm chia sẻ
+--> Thực hành
+.................
+- Boundary Extractor cũng rất đơn giản.
