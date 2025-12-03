@@ -1,0 +1,49 @@
+Xin chào lớp!
+
+Buổi hôm trước chúng ta đã cùng nhau tìm hiểu và biết cách mà Jmeter nhận biết như thế nào là một request Pass hay Faild
+
+Bổi hôm nay chúng ta cùng nhau tìm hiểu về một tính năng khác của Jmeter đó là Extract dữ liệu sau khi request trả về Response
+
+Chúng ta sẽ có một bài toán như sau
+
+1. Api POST: login
+ 			+ Response: {
+ 					   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDEiLCJuYW1lIjoiTmd1eWVuIFZhbiBBIiwicm9sZXMiOlsiYWRtaW4iLCJlZGl0b3IiXSwiaWF0IjoxNzM1ODk2MDAwLCJleHAiOjE3MzU5ODI0MDB9.4fKqzQkzvZkQ9V6ZkQ8lVwXhZkQ9V6ZkQ8lVwXhZkQ9V6ZkQ8lVwXhZkQ9V6",
+  					   "token_type": "Bearer",
+  					   "expires_in": 3600
+					}
+2. Api GET: orders
+			+ Input: Headers: Authorization: Bearer ${access_token}
+
+--> Nhìn vào đây chúng ta hiểu là sẽ phải tìm cách extract access_token sau đó mang xuống Headers của api orders đúng k ạ?
+
+
+Buổi học hôm nay chúng ta sẽ tìm cách thực hiện việc đó. Và chúng ta xem có bao nhiêu cách để giải quyết bài toán trên ha.
+
+Ok đến với nội dung đầu tiên của buổi hôm nay đó là JSON Extractor.
+
+- Đầu tiên chúng ta sẽ tìm hiểu xem như thế nào là JSON. Chắc hẳn mọi người ở đây ai cũng từng thấy và làm việc với Json rồi ha. Đặc biệt là các anh chị từng làm Automation API hoặc là các bạn làm với những API chuẩn restful api
+
+- Trên màn hình mọi người đang xem {  "name": "Tom",  "age": 30,  "city": "Ho Chi Minh"} -> chính là một ví dụ về Json
+
+Về lí thuyết: 
+✳️Cấu trúc JSON: Object
+Object là một tập hợp các cặp khóa – giá trị (name/value pairs), không theo thứ tự cố định.
+Bắt đầu bằng { và kết thúc bằng }
+Mỗi tên đi kèm một giá trị, nối với nhau bằng dấu :
+Các cặp phân tách bằng dấu ,
+
+-> Ok lý thuyết để nhận dạng như nào là Json ha. Bây giờ chúng ta sẽ tìm hiểu về cách trích xuất giá trị từ đoạn Json
+Với Database chúng ta dùng SQL, Text đơn thuần có thể dùng Regex, Với Json thì chúng ta có một cách nhanh hơn và dễ dàng hơn đó là JsonPath
+
+Mọi người vào trang : https://jsonpath.com/
+
+Đây là bảng công thức các cú pháp cơ bản hay sử dụng nhất của Jsonpath. Chúng ta sẽ tìm hiểu và thực hành trực tiếp xem nó hoạt động như thế nào ha.
+Đoạn Json chúng ta thấy sẽ có các cấp độ như sau
+  Show ảnh cho mọi người xem sơ đồ: Root -> Node 
+
+Show Bảng trên Docscument và thực hành
+Xuống phần bài tập
+-> Done 
+-> Quay lại giải quyết bài toán đầu buổi học.
+
