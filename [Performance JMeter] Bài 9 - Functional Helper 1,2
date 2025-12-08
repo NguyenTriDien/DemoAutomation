@@ -1,0 +1,77 @@
+Chào mn đến với buổi học ngày hôm nay. Trước khi đi vào nội dung chi tiết, chúng ta cùng đi qua một ví dụ đơn giản nhé.
+
+Ví dụ: Một bạn làm API testing với Postman và có Automation test. API yêu cầu nhập vào created_date. Ở đây chúng ta có 2 cách giải quyết:
+
++ Mỗi lần run thì điền lại ngày thủ công.
++ Automation tự động điền ngày hiện tại vào.
+
+👉 Các công cụ hiện tại đều được viết ra để giúp người dùng giải quyết vấn đề này.
+
+🛠 Với Postman
+Postman cung cấp Pre-request Script và Built-in Variables.
+
+Ví dụ: bạn có thể dùng biến {{$timestamp}} hoặc viết một đoạn script nhỏ bằng JavaScript để tự động sinh ngày hiện tại.
+
+Nhờ đó, mỗi lần chạy request, Postman sẽ tự động chèn giá trị ngày/giờ mà không cần nhập tay.
+
+⚙️ Với Automation test (Unit test / Integration test)
+Các bạn thường viết utility functions dạng static, ví dụ getCurrentDate() hoặc getTimestamp().
+
+Sau đó, ở bất kỳ đâu cần giá trị ngày, chỉ cần gọi hàm này.
+Đây là cách phổ biến trong code để tái sử dụng logic.
+
+🚀 Với Performance test (JMeter)
+Tương tự như các loại testing khác, performance test cũng có nhu cầu xử lý dữ liệu động.
+JMeter là công cụ low-code, nên nó cung cấp sẵn một tính năng gọi là Function Helper Dialog.
+Đây là “hộp công cụ” giúp bạn sinh dữ liệu, xử lý logic đơn giản (như lấy ngày hiện tại, tạo số ngẫu nhiên, nối chuỗi…) mà không cần viết code lại.
+Bạn chỉ cần chọn hàm, nhập tham số, xem kết quả, rồi copy cú pháp vào test plan.
+Nhắc lại kiến thức chút về cú pháp gọi biến trong Jmter.
+
+Gọi biến đã được định nghĩa
+${varName}
+→ Dùng để lấy giá trị của một biến đã được gán trước đó (ví dụ từ CSV Data Set, User Defined Variables, hoặc từ kết quả của một hàm).
+
+Gọi hàm (function) có sẵn của JMeter
+
+${__functionName(param1,param2,...,variableName)}
+→ Dùng để sinh dữ liệu hoặc xử lý logic.
+
+functionName: tên hàm (ví dụ: __time, __Random, __UUID).
+param1,param2,...: danh sách tham số truyền vào.
+variableName: tùy chọn, nếu muốn lưu kết quả vào một biến để tái sử dụng.
+
+Nếu bạn nào từng coding rồi thì không còn xa lạ gì cho việc viết một hàm nào đó đúng k. Một hàm thì nó sẽ có các đặc điểm kiểu như
+
++ Không cần tham số không cần return giá trị
+
+Puclic void Helloword(){
+System.out.println("Performance testing Tháng 11");
+}
+
++ Có thể có tham số và không trả về giá trị
+
+Puclic void Helloword(Interger month){
+System.out.println("Performance testing Tháng" + month);
+}
+
++ Có thể có nhiều tham số và trả ra giá trị
+
+public String HelloWord(Integer date, Integer month, Integer year) {
+    String fullDate = date + "/" + month + "/" + year;
+    System.out.println("Performance testing " + fullDate);
+    return fullDate;
+}
+
+Ok trên đây là lí thuyết của Fucntion. Sau đây chúng ta sẽ đến với Fucnction trong jmeter xem  nó là gì. Nó có những Fucntion nào. Và chúng ta sẽ đi qua một lượt các Function hay sử dụng nhất.
+
+- Giới thiệu về Giao diện của Function
+--> Rất nhiều function
+
+Ok buổi hôm nay chúng ta sẽ đi qua một lượt nhé.
+
+✅ Random number
+✅ Random string
+✅ Choose random
+✅ Time
+✅ Time shift
+✅ Random date
