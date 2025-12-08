@@ -1,3 +1,6 @@
+Chào cả lớp. Buổi trước chúng ta đã cùng nhau tìm hiểu các cách để có thể trích xuất dữ liệu từ response của request để sử dụng cho request khác. Mọi người đã thực hành lại
+chưa. Có câu hỏi gì cho em không ạ??. Mn mở mích hoặc chát trực tiếp luôn nhá
+
 Chào mn đến với buổi học ngày hôm nay. Trước khi đi vào nội dung chi tiết, chúng ta cùng đi qua một ví dụ đơn giản nhé.
 
 Ví dụ: Một bạn làm API testing với Postman và có Automation test. API yêu cầu nhập vào created_date. Ở đây chúng ta có 2 cách giải quyết:
