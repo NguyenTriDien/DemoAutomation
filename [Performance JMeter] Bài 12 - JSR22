@@ -1,0 +1,57 @@
+Scripting -> Nâng cao Jmeter.
+
+Với những kiến thức mà chúng ta đi qua thì chúng ta đã có thể xử lí được rất nhiều thứ rồi. CHúng ta đã có thể 
+làm TestPlan. Xử lí hầu hết các logic rồi.
+
+Nhắc lại kiến thức một chút
+
+Jmeter được viết 100% java.
+Core Jmete: TestPlan -> ThreadGroup -> Sampler(Https)-> 90 Công sức ở đây
+
+	Do something(PreProcessor)	->		Sampler(Http) ->   Do something(PostProcessor)
+	
+	PreProcessor: Chưa tìm hiểu gì cả
+	PostProcessor: JSON Extractor, Regular Expression Extractor, Boundary Extractor
+	
+Thì chúng ta đã làm được gần như 90 95% logic cho TestPlan rồi. Tuy nhiên trong một số trường hợp đặc thù(5 -> 10%)
+Còn lại chúng ta chưa làm được.
+Ví dụ: Hàm mã hóa SHA256
+       Ảnh -> Mã hóa ảnh bằng thuật toán công ty các bạn 
+	   .......
+--> Code thêm
+
+Vì Jmeter được code bằng Java nên ngày xưa mn dùng Java để coding trong Jmeter. Tuy nhiên sau đó người
+ta nhận thấy có vấn đề khi dùng Java để code trong Jmeter. vấn đề đó là gì chúng ta sẽ đi tìm hiểu ha.
+Để thực thi code Java thì nó sẽ bắt buộc phải trải qua như sau
+
+HelloWord.java -> Compile -> HelloWord.clas -> Excute -> HelloWord
+
+-> Với java quá trình này là bắt buộc.
+Trong performance test chúng ta chạy 1000, 100.000, 1000.000 thì mỗi lần chạy
+	HelloWord.java -> Compile -> HelloWord.clas -> Excute -> HelloWord :1 -> 10ms
+	HelloWord.java -> Compile -> HelloWord.clas -> Excute -> HelloWord :2
+	HelloWord.java -> Compile -> HelloWord.clas -> Excute -> HelloWord :3
+	...................................................................:n -> n*10ms = 10.000.000 ms
+---> Stop không dùng java nữa.	
+Để khác phục vấn đề này thì họ từ bỏ java trong Jmeter và chuyển qua Groovy. Nghe hơi lạ nhưng thực tế nó cũng khá nổi tiếng.
+Và groovy được phát triển dựa trên Java. Và rất hay là Groovy có thể thực thi được 90% code java. Cho nên effor mà chúng ta
+bỏ ra để migrate từ Java sang Groovy là không nhiều.
+
+Thì thằng này có cái gì mà có thể khắc phục được vấn đề trên. Chúng ta tìm hiểu các Groovy thực thi xem như nào
+  HelloWord.java -> Compile -> HelloWord.clas -> Excute -> HelloWord :1 -> 10ms -> giống i chang
+											  -> Excute -> HelloWord :2
+											  -> Excute -> HelloWord :4
+Nói cách khác Groovy cho phép cache lại quá trình mà nó compile.
+
+--> Câu hỏi phỏng vấn. Theo em tại sao Jmeter được code hoàn toàn bằng Java tuy nhiên Scripting trong Jmeter
+lại được code bằng Groovy.
+
+Trước khi đi tiếp nội dung thì em nhấn mạnh một chút. Là buổi học hôm nay chúng ta không học code Groovy
+mà chúng ta tìm hiểu các mà Jmeter work Groovy ha. Còn bản thân Groovy nó là một ngôn ngữ lập trình
+nếu bạn nào muốn hiểu và code tốt với nó thì chúng ta cần luyện tập như các ngôn ngữ lập trình khác.
+
+Trong Jmeter nó cung cấp cho chúng ta có một khái niệm đó là : JSR223 thì đây là lý thuyêts của nó
+
+Đọc lí thuyết trên Docs.
+...
+3. Các thành phần JSR223 trong JMeter
