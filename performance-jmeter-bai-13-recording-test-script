@@ -1,0 +1,120 @@
+Chào mn buổi hôm nay chúng ta đến với buổi học mới cũng là nội dung mới mà từ đầu đến bây giờ chúng ta chưa nhắc đến một lần nào cả.
+Buổi học có tên là Recoding Testscsript. Thì ngay từ tên của  nó thì mình cũng hình dung được phần nào dung rồi ha.
+Tổng quan thì thằng  này mình dùng để capture lại tất cả request mà client call Service khi mình thao tác trên giao diện ha.
+
+Chúng ta sẽ có một khái niệm gọi là Proxy.
+
+Client work server: Client -> Request -> Server -> Response -> Client
+
+Thì bây giờ Proxy nó đóng vài trò gì trong mô hình mà chúng ta dùng Jmeter để recoding được các request mà client nó call
+
+-> Mô hình có thêm proxy nó sẽ như thế này: Client -> Request -> Proxy -> Server -> Response -> Proxy -> Client
+
+Nhìn vào mô hình này là chúng ta thấy rằng tất cả Request, Response trước khi tới Server và trả về Client thì nó phải đi qua Proxy trước đúng k.
+Vai trò ứng dụng của proxy này thì có các vài trò chính như sau:
+
++ Giúp theo dõi, ghi lại, hoặc lọc request.
++ Che giấu IP thật của client (trong các hệ thống an toàn).
++ Trong JMeter: phục vụ mục đích ghi lại luồng request thực tế của người dùng.
+
+--> Và ta có thể tận dụng các tính năng của proxy (Ghi log lại các request) để có thể capture được các request mà client call server.
+Thì với jmeter nó có một tính năng là dùng Jmeter để đóng vài trò là một proxy để giúp chúng ta có thể cature được request khi mà chúng ta thao tác trên Client. Từ đó giúp chúng ta
+xây dựng TestPlan một cách nhanh chóng và chính xác hơn.
+
+Thì mô hình apply của nó sẽ trở thành như sau:  Client -> Request -> Proxy(Jmeter) -> Server -> Response -> Proxy(Jmeter) -> Client
+
+Thì đến thời điểm hiện tại Jmeter chỉ suport 2 protocol trong Recorder đó là: Http và Https
+
+
+- Ok bây giờ mọi người mở Jmter ra giúp em. Tạo Recording
+-> Thì đây là giao diện của một trình Recoder Testscript của Jmeter ha. Thì với Jmeter việc khởi tạo Proxy cực kì đơn giản. Theo lí thuyết mọi người chỉ cần
+click vào HTTP(S) Test Script Recorder -> Click nút Tam giác màu xanh
+
+-> Đến đây chúng ta đã thành công khởi tạo Jmeter thành một proxy rồi đấy ạ. -> Rất đơn giản phải k
+
+-> Bước 1: Khởi tạo proxy Jmeter: -> OK
+
+-> Mn tạm thời tắt giúp em.
+
+Tuy nhiên trước khi đi vào thực hành chúng ta điểm qua chút về lí thuyết tý nhé.
+
++ Chúng ta sử dụng Jmeter trực tiếp trên máy của chúng ta: Thuật ngữ chúng ta gọi là Local. Thì với tất cả máy tính chúng ta sử dụng các dịch vụ được cài đặt trên máy
+thì chúng ta luôn có thể truy cập dịch vụ đó bằng địa chỉ Localhost.
+-> Địa chỉ proxy được tạo ra từ Jmeter -> Localhost -> Tương đương với địa chỉ Ip nội bộ của máy mọi người: Ipconfig -> .... -> Khi cấu hình địa chỉ mn có thể để Localhost hoặc Ip . Tuy nhiên mình cứ để Local host cho tiện 
+
++ Thông số thứ 2 đó là Port: 
+Khái niệm Port: Chắc hẳn mọi người cũng đã gặp và quen với khái niệm Port rồi ha. Một số trường hợp hay gặp như sau:
++ Http : 8080
++ Https: 443
++ Mysql: 3306
++ SSH  : 22
+Thì khái niệm Port thì ta hiểu như nào ha.
++ Localhost :-> Địa chỉ Phòng giao dịch ngân hàng
++ Port      :-> Cửa giao dịch
+
+-> Thì một Phòng giao dịch sẽ có nhiều dịch vụ xử lí công việc. Và mỗi dịch vụ thì sẽ được xử lí ở một cửa quầy giao dịch nào đó
+
+Thì với máy tính thì Port có thể được hiểu là một cái cổng nơi mà Máy tính sẵn sàng chạy một dịch vụ nào đó
+
+-> Quay lại với Jmeter. Thì chúng ta dùng Jmeter để khởi tạo một dịch vụ đó là Proxy. Thì chúng ta cũng cần chỉ định Port mà Jmeter sử dụng để chạy dịch vụ Proxy đó.
+Thì mặc định Proxy với Jmeter sử dụng port 8888. Tốt nhất nếu không có gì đặc biệt. Không conflic port thì mn nên để mặc định là 8888 cho nhàn ha. 
+
+
+Ok chúng ta quay lại thực hành cho dễ hiểu ha.
+
+Lúc nãy chúng ta có thực hiện hành động bấm Start sau đó Stop proxy. Thì hành động trên nó đã giúp chúng ta một việc đó là sinh ra cái file Certificates -> Dùng để Trust security cho các Request sử dụng Https.
+Ở trên em có đề cập là Recording trong Jmeter chỉ support 2 giao thức: Http, Https(Chữ S có nghĩa là Security. Bảo mật nên chúng ta muốn capture được Https thì phải có Chứng chỉ ha). Thì chứng chỉ đấy được sinh 
+ra ở đâu. Mọi người mở Thư mục chứa Jmeter ra giúp em "bin/ApacheJMeterTemporaryRootCA.crt"
+
+Ok lí thuyết thì như thế nhưng kết quả cuối cùng chúng ta nhận lại được đó là:
+-> Bước 1: Khởi tạo proxy Jmeter: -> OK (port 8888,ApacheJMeterTemporaryRootCA.crt)
+
+
+Bước 2 chúng ta đến với việc cấu hình sử dụng Proxy để capture request ha. 
+
++ Mọi người đã cài Fire fox hết chưa ạ. Ai chưa cài thì tải nhanh giúp em nhé.
+
+-> Setting -> Proxy -> localhost: 8888
+--> Chúng ta đã thành công đăng kí proxy Jmeter cho trình duyêt firefox.
+
+- Chúng ta thử truy cập một trang web http://demo.testfire.net/
+
+-> Không truy cập được -> Do chúng ta chưa bấm Start Jmeter proxy -> Mn bấm start Jmeter giúp em
+
+-> Chúng ta thấy truy cập được chưa ạ. Đồng thời mn check log View result tree xem có request chưa ạ.
+
+-> Đến đây chúng ta đã thành công cấu hình Jmeter để đóng vài trò làm proxy để capture request rồi. Tuy nhiên bây giờ mn thử truy cập: https://anhtester.com/
+xem có được không ạ.
+--> Không được đúng không. Cho dù chúng ta đã bật proxy Jmeter rồi. Thì mọi người để í 2 domain mình vừa thử truy cập nè
+
+--- http://demo.testfire.net/ -> Http -> No secure (Không bảo mật) -> Không cần chứng chỉ -> Truy cập bình thường
+--- https://anhtester.com/    -> Https -> Secure (Bảo mật) -> Cần chứng chỉ để có thể truy cập
+
+--> ApacheJMeterTemporaryRootCA.crt phát huy sức mạnh
+
+-----> Settings → Privacy and Security → Manage Certificates → Import
+
+--> Load lại trang xem đã vào được chưa ạ -> Check log
+
+---> OK vậy là chúng ta đã hoàn thành việc Khởi tạo proxy bằng Jmeter và cấu hình nó để capture request trên Trình duyệt ha. Sau đây chúng ta sẽ tiến hành thực hành thêm chút để biết thêm các chức năng của nó ha.
+
+Chúng ta sẽ thử Record full 1 luồng từ Lúc vào trang Anh tester -> performance-testing -> View Detail khóa học -> Đăng kí mua ngay
+
++ Khi mọi người record sản phẩm công ty thông thường ta chỉ quan tâm đến các request của domain đó thôi. Thì Jmetet cũng có cung cấp bộ lọc cho mn bằng cách sử dụng regex
+-> Bấm vào Tab filter request: .*anhtester.com.*
++ Giới thiệu về các chức năng. Transaction Name, Naming Scheme
++ Record xong chúng ta sẽ check trong từng Request xem có giá trị nào mà chúng ta nghi ngờ là giá trị động hay không. Giá trị sinh ra từ request trước đó chẳng hạn. Cách tìm chúng ta vào ViewResult tree
+search cái giá trị đó. Và xem nó có hiển thị trong Request nào không. Nếu có thì chúng ta có thể dùng Extractor để trích xuất và cho vào Request để sử dụng.
+
++ Đến đây chúng ta đã có một TestPlan dạng Raw -> Dạng thô í. Bây giờ chúng ta sẽ tiến hành làm mịn nó ha. Mọi người mở thêm một Jmeter thứ 2 bằng cách Cmd -> Jmeter
+
+Sau đó chúng ta sẽ tiến hành copy các thứ chúng ta đã làm được ha và thêm các Config Element cần thiết
++ User define
++ Csv dataconfig
++ Http request defauld
++ Cookie manager
+---> Để build nhanh mn có thể sử dụng luôn Template cung cấp sẵn Advanced Webplan
+
+
+
+
