@@ -116,5 +116,11 @@ Sau đó chúng ta sẽ tiến hành copy các thứ chúng ta đã làm đượ
 ---> Để build nhanh mn có thể sử dụng luôn Template cung cấp sẵn Advanced Webplan
 
 
+Trên đây là nội dung về Recording trong Jmete và chúng ta đã thực hành với Web. Và thực tế chúng ta có thể record cả với ứng dụng Mobile. Tuy nhiên trong khóa học này mình không đưa vào. Trên công ty bạn nào
+đang làm ứng dụng mobile mà cần recording trên mobile
+Thì có thể ping em em hướng dẫn chi tiết. Nhưng nhìn chung nó cũng tương tự như Web chỉ khác một chút về việc import chứng chỉ và set proxy thôi.
+Link tham khảo: https://www.frugaltesting.com/blog/jmeter-how-to-record-mobile-application-traffic
+
+
 
 
