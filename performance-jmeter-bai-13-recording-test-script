@@ -1,8 +1,8 @@
 Chào mn buổi hôm nay chúng ta đến với buổi học mới cũng là nội dung mới mà từ đầu đến bây giờ chúng ta chưa nhắc đến một lần nào cả.
-Buổi học có tên là Recoding Testscsript. Thì ngay từ tên của  nó thì mình cũng hình dung được phần nào dung rồi ha.
-Tổng quan thì thằng  này mình dùng để capture lại tất cả request mà client call Service khi mình thao tác trên giao diện ha.
+Buổi học có tên là Recoding Testscsript.  Thì ngay từ tên của  nó thì mình cũng hình dung được phần nào dung rồi ha.
+Tổng quan thì thằng  này mình dùng để capture lại tất cả request mà client call Service khi mình thao tác trên giao diện ha. Thay vì mình phải tự đi cấu hình tất cả request bằng tay
 
-Chúng ta sẽ có một khái niệm gọi là Proxy.
+Chúng ta sẽ có một khái niệm mới gọi là Proxy.
 
 Client work server: Client -> Request -> Server -> Response -> Client
 
