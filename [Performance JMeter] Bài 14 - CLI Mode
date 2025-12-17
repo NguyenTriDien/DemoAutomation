@@ -271,7 +271,7 @@ Báo cáo bao gồm:
 ### 7.1 Cấu hình HEAP (RAM)
 
 👉 Khuyến nghị:
-
+set HEAP=-Xms
 > **HEAP ≈ 70–80% RAM vật lý**
 
 Ví dụ máy 16GB RAM:
@@ -284,7 +284,7 @@ Ví dụ máy 16GB RAM:
 ---
 
 ### 7.2 Thư mục backup dữ liệu
-
+jmeter.gui.action.save.backup_directory
 * Tránh mất file JTL
 * Phục vụ gen report lại
 
