@@ -1,0 +1,344 @@
+# BUỔI 14 – CHẠY JMETER Ở CHẾ ĐỘ NON-UI (CLI MODE)
+
+## Mục tiêu buổi học
+
+Sau buổi này, học viên có thể:
+
+* Hiểu **vì sao khi chạy Performance Test phải dùng Non-UI (CLI Mode)**
+* Biết **cách chạy JMeter bằng command line**
+* Biết **đọc log console, file kết quả JTL, báo cáo HTML**
+* Biết **tùy biến tham số test mà không cần mở UI**
+* Hiểu bản chất file JTL và cách gen lại báo cáo
+
+---
+
+## 1. Nhắc lại kiến thức về JMeter
+
+### 1.1 Chạy JMeter bằng UI (GUI Mode)
+
+👉 Mục đích chính:
+
+* Thiết kế Test Plan
+* Debug logic (request đúng hay sai)
+* Kiểm tra nhanh response
+
+👉 **KHÔNG dùng để chạy Performance Test thật**
+
+Lý do:
+
+* UI tiêu tốn **rất nhiều RAM và CPU**
+* Kết quả đo **không chính xác** (tài nguyên bị UI chiếm)
+* Dễ bị treo khi số thread lớn
+
+📌 Kết luận:
+
+> **GUI Mode chỉ dùng để debug và build Test Plan**
+
+---
+
+### 1.2 Chạy JMeter bằng CLI Mode (Non-UI)
+
+👉 Mục đích:
+
+* Chạy test chính thức
+* Thu thập dữ liệu
+* Sinh báo cáo
+
+### Vì sao cần chạy CLI Mode?
+
+✅ **Tiết kiệm tài nguyên**
+
+* Không load UI → giảm RAM/CPU
+
+✅ **Kết quả chính xác hơn**
+
+* Tài nguyên tập trung cho việc generate load
+
+✅ **Tổng hợp báo cáo tự động**
+
+* Sinh báo cáo HTML ngay sau khi chạy
+
+✅ **Chạy được trên server không có giao diện**
+
+* Linux server, Docker, CI/CD (Jenkins, GitLab CI…)
+
+📌 Trong thực tế:
+
+> **99% chạy Performance Test là Non-UI**
+
+---
+
+## 2. CLI MODE – Các câu lệnh quan trọng
+
+### 2.1 Câu lệnh chạy test + sinh báo cáo (95% sử dụng)
+
+```bash
+jmeter -n \
+       -t TestBTH.jmx \
+       -l ketqua.jtl \
+       -e \
+       -o html-report
+```
+
+#### Giải thích tham số
+
+* `-n` : Non-UI mode
+* `-t` : File Test Plan (.jmx)
+* `-l` : File kết quả (.jtl)
+* `-e` : Enable báo cáo HTML
+* `-o` : Thư mục chứa báo cáo HTML
+
+#### ⚠️ LƯU Ý QUAN TRỌNG
+
+* File `ketqua.jtl` **KHÔNG được tồn tại trước** → nếu có sẽ **báo lỗi**
+* Thư mục `html-report` **PHẢI TRỐNG** → nếu không trống sẽ **báo lỗi**
+
+📌 Thực tế:
+
+> 95% trường hợp chỉ cần **1 câu lệnh này**
+
+---
+
+### 2.2 Câu lệnh sinh báo cáo từ file JTL có sẵn (5% trường hợp)
+
+Dùng khi:
+
+* Chạy test trước đó rồi
+* Muốn gen lại report
+* Hoặc chỉnh sửa file JTL
+
+```bash
+jmeter -g ketqua.jtl -o html-report
+```
+
+Trong đó:
+
+* `-g` : Generate report từ file JTL
+* `-o` : Thư mục report HTML
+
+---
+
+## 3. Thực hành: Tạo Test Plan và chạy CLI
+
+### 3.1 Chuẩn bị thư mục
+
+👉 Mọi người tạo thư mục:
+
+```text
+Buoi14/
+│── TestBTH.jmx
+│── ketqua.jtl
+│── html-report/
+```
+
+---
+
+### 3.2 Tạo Test Plan đơn giản
+
+#### Yêu cầu Test Plan
+
+* 1 Thread Group
+* 2 Dummy Sampler
+
+#### Cấu hình:
+
+* Dummy Request 1: **PASS**
+
+  * Response Code: `200`
+  * Response Message: `OK`
+
+* Dummy Request 2: **FAILED**
+
+  * Response Code: `500`
+  * Response Message: `Internal Server Error`
+
+📌 Mục đích:
+
+> Tạo tỷ lệ **pass / fail** để quan sát báo cáo
+
+---
+
+### 3.3 Cấu hình Thread Group (ví dụ)
+
+* Number of Threads (Users): `10`
+* Ramp-up Period: `5`
+* Loop Count: `2`
+
+---
+
+### 3.4 Chạy test bằng CLI
+
+```bash
+jmeter -n -t TestBTH.jmx -l ketqua.jtl -e -o html-report
+```
+
+---
+
+## 4. Quan sát kết quả khi chạy
+
+### 4.1 Các file/thư mục sinh ra
+
+* `ketqua.jtl` → File kết quả raw
+* `html-report/` → Báo cáo HTML
+
+---
+
+### 4.2 Thông tin hiển thị trên console
+
+Ví dụ:
+
+```text
+Starting the test @ Wed Dec 17 19:00:00 ICT 2025
+summary + 40 in 00:00:05 = 8.0/s Avg: 50 Min: 10 Max: 120 Err: 20 (50.00%)
+summary = 40 in 00:00:05 = 8.0/s Avg: 50 Min: 10 Max: 120 Err: 20 (50.00%)
+```
+
+Giải thích:
+
+* `40` : Tổng số sample
+* `8.0/s` : Throughput
+* `Avg / Min / Max` : Response time
+* `Err: 20 (50%)` : Tỷ lệ lỗi
+
+---
+
+## 5. Đặt vấn đề & Giải pháp
+
+### Vấn đề 1: Thay đổi Thread, Ramp-up mà không mở UI?
+
+👉 Nếu server **không có giao diện** thì sao?
+
+✅ Giải pháp: **JMeter Property (-J)**
+
+Ví dụ:
+
+```bash
+jmeter -n -t TestBTH.jmx \
+       -l ketqua.jtl \
+       -e -o html-report \
+       -Jthreads=50 \
+       -Jrampup=10
+```
+
+Trong Test Plan:
+
+* Threads = `${__P(threads,10)}`
+* Ramp-up = `${__P(rampup,5)}`
+
+📌 Mặc định nếu không truyền `-J` → dùng giá trị fallback
+
+---
+
+### Vấn đề 2: Có lỗi → làm sao biết lỗi gì?
+
+👉 CLI **KHÔNG hiển thị response chi tiết**
+
+✅ Giải pháp:
+
+* Dùng **View Results Tree**
+* Chỉ bật khi **có lỗi**
+
+Cấu hình:
+
+* Tick: `Errors`
+* Không tick: Success
+
+📌 Mục đích:
+
+> Lấy request / response → gửi Dev check log
+
+---
+
+## 6. Giới thiệu báo cáo HTML của JMeter
+
+Báo cáo bao gồm:
+
+* Dashboard tổng quan
+* Throughput
+* Response Time
+* Error Rate
+* Active Threads
+
+📌 Báo cáo dùng để:
+
+* Đánh giá hiệu năng tổng thể
+* Trình bày với PM / khách hàng
+
+---
+
+## 7. Tối ưu JMeter khi chạy Non-UI
+
+### 7.1 Cấu hình HEAP (RAM)
+
+👉 Khuyến nghị:
+
+> **HEAP ≈ 70–80% RAM vật lý**
+
+Ví dụ máy 16GB RAM:
+
+```text
+-Xms8g
+-Xmx12g
+```
+
+---
+
+### 7.2 Thư mục backup dữ liệu
+
+* Tránh mất file JTL
+* Phục vụ gen report lại
+
+---
+
+## 8. Bản chất file JTL & Gen lại báo cáo
+
+### 8.1 Bản chất file JTL
+
+👉 File `.jtl` thực chất là:
+
+* **CSV (Comma Separated Values)**
+
+➡️ Có thể:
+
+* Mở bằng Excel
+* Mở bằng Notepad
+* Chỉnh sửa thủ công
+
+---
+
+### 8.2 Demo: Chỉnh file JTL
+
+* Mở `ketqua.jtl`
+* Thêm 1 dòng sample hợp lệ
+* Lưu lại
+
+Gen lại báo cáo:
+
+```bash
+jmeter -g ketqua.jtl -o final-report
+```
+
+👉 Kết quả:
+
+* Tổng số sample **tăng thêm 1**
+
+📌 Ý nghĩa:
+
+> Báo cáo HTML **phụ thuộc hoàn toàn vào dữ liệu JTL**
+
+---
+
+## 9. Tổng kết
+
+✅ GUI: Build & Debug
+✅ CLI: Run & Report
+✅ Non-UI là tiêu chuẩn trong Performance Test
+
+👉 Buổi sau:
+
+* Chạy JMeter bằng script
+* Tích hợp CI/CD
+
+---
+
+🎯 **End of Buổi 14**
