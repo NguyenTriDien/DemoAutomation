@@ -1,0 +1,100 @@
+- Buổi trước chúng ta đã tìm hiểu về cách chạy Jmeter ở chế độ CLI MODE và hiểu về bản chất cách mà Jmeter sinh ra báo cáo htmlreport
+- Nhắc lại kiến thức một chút nhé
+
++ Khi chạy báo cáo Jmeter -> report.jtl -> htmlreport
++ report.jtl (csv) -> Chỉnh sửa theo í mình -> Gen ngược lại report
+
+- Buổi hôm nay chúng ta sẽ tìm hiểu về Remote Testing. Thì tại sao lại có thằng này. Hay nói cách khác thằng này sinh ra để giải quyết mục đích gì?
+
+- Từ lúc bắt đầu khóa học chúng ta luôn nói với nhau về Performance test server side. Và chúng ta tập trung gần như 100% thời gian vào nó.
+Mô hình quen thuộc
+
+    Localhost (Jmeter -> Client) -> Request -> Server
+
+Kịch bản chúng ta hay nói với nhau là: 
+							+ Chạy 100 Thread(CCU) -> OK
+							+ Chạy 500 Thread(CCU) -> OK
+							+ Chạy 1000 Thread(CCU)-> OK
+						      + Chạy 2000 Thread(CCU)-> ?????
+Tuy nhiên để khởi tạo được số lượng CCU lớn như thế thì máy đổ tải của chúng ta cũng cần có đủ sức mạnh để làm việc này (Ram, CPU, PORT).
+Chỗ này rất nhiều người ở ngoài khi đi làm. Mọi người không hề biết đến sự tồn tại của vấn đề này. Và người ta cứ truyền CCU vào và mặc định là số CCU đó đã được khởi tạo thành công.
+--> Show báo cáo Active thread overtime bất kì
+
+Thì để giải quyết được vấn đề đảm bảo hiệu năng của máy đổ tại khởi tạo đủ Thread cần chạy. Thì bản chất chúng ta có thể có 2 cách.
+
++ Cách 1: Nâng cấp máy đổ tại của mọi người: Tăng RAM, Thay CPU tốt hơn
+--> Scale theo chiều dọc (Vertical Scaling)
++ Cách 2: Thêm nhiều máy đổ tải hơn. Thay vì dùng 1 máy chúng ta dùng nhiều máy hơn
+--> Scale theo chiều ngang (Horizontal Scaling)
+
+--> Thì mỗi cách nó đều có cái ưu và nhược điểm riêng đúng không. Tùy vào bối cảnh, hoàn cảnh thì chúng ta sẽ lựa chọn cách tối ưu nhất ha. Thì buổi ngày hôm nay chúng ta sẽ tìm hiểu 
+Cách 2. Để xem cách mà Jmeter nó làm để có thể kết hợp nhiều máy tính lại để tăng sức mạnh ha.
+
+Quay lại lí thuyết trên DOCS.
+-------
+
+-- Bản chất của việc chạy Test này là như thế nào. 
+Đây là các gốc mà Jmeter nó hoạt động
++ Khi chạy báo cáo Jmeter -> report.jtl -> htmlreport
++ report.jtl (csv) -> Chỉnh sửa theo í mình -> Gen ngược lại report
+
+Thì trong mô hình Master slave này nó work như nào
++ Chúng ta có TestPlan.jmx
+
+
+Master (TestPlan.jmx)  + Slave 1(Jmeter-server)
+			     + Slave 2(jmeter-server)
+
+Thì bản chất cách nó hoạt động như sau. Thì nó mang cái file TestPlan.jmx sang bên các máy slave để chạy. Và gửi lại kết quả cho Master. Để dễ hiểu hơn thì mô hình của nó trông giống thế này
+
+Master (TestPlan.jmx, report.jtl)  + Slave 1 (TestPlan.jmx) -> Request -> Response -> Save report.jtl (Master)
+					     + Slave 2 (TestPlan.jmx) -> Request -> Response -> Save report.jtl (Master)
+-> report.jtl chứa tất cả kết quả của quá trình chạy test từ tất cả Slave -> Gen Html report
+
+-- Trước khi đi vào thực hành thì mình điểm qua chút Preconditon của nó tý nhé (Điều kiện tiên quyết để tránh gặp các lỗi ma giáo :))
+
+ 4. Yêu cầu trước khi cấu hình
+Để chạy được remote test, các máy cần:
+Cùng phiên bản JMeter.
+Cùng phiên bản Java (nên dùng Java 11 hoặc 17).
+Kết nối cùng mạng LAN hoặc VPN.
+Mở các port cần thiết: 1099 và 4000 (hoặc theo cấu hình RMI).
+Tắt Firewall hoặc cho phép RMI port.
+
+
+-- Thì bài thực hành này mọi người sẽ khó có thể thực hành cùng được vì mọi người đang hầu hết chỉ có một máy tính thôi.Tuy nhiên mọi người vẫn thao tác theo mình và quan sát cách mình làm.
+Thì ngày mai đi làm mọi người có thể thử trên máy đồng nghiệp.
+
+THỰC HÀNH TRÊN MÁY CỦA TÔIIIII
+
+-----> Trên đây là cách mà Jmeter cung cấp cho chúng ta cách tận dụng sức mạnh của nhiều máy để có thể đổ tải lớn nếu một máy không đủ.
+
+Tuy nhiên ngoài cách này ra. Thì mình sẽ cung cấp thêm cho các bạn một cách nữa. Cách này được mình rút ra sau vài năm chinh chiến.
+
++ Khi chạy báo cáo Jmeter -> report.jtl -> htmlreport
++ report.jtl (csv) -> Chỉnh sửa theo í mình -> Gen ngược lại report
+
+Tận dụng khả năng cho phép chỉnh sửa báo cáo của Jmeter chúng ta có thể làm cách như sau. Thay vì phải cấu hình Remote testing như trên chúng ta có thể thực hiện
+Bước 1: Gửi file TestPlan.jmx cho các máy cần đổ tải
+Bước 2: Sau khi chạy xong có phải chúng ta đã có được file report.jtl trên các máy đúng không?
+Bước 3: Chúng ta tiến hành merge các file lại với nhau. Show 2 file JTL sau đó bỏ header đi và paster vào cuối hoặc đầu
+Bước 4. Chạy câu lệnh generate lại report
+
+---> Mọi người có thể tìm hiểu thêm về cách làm tự động hóa việc cắt và nối file này.Tất cả hệ điều hành nó đều có câu lệnh cho mọi người làm tự động được ha
+
+Ví dụ các bước Automation cho mn tham khảo thêm nhé:
+
++ Bước 1: Dùng lệnh để kéo file từ các máy đổ tải về (Mở SSH trên các  máy. Dùng lệnh SCP(Linux), ...)
++ Bước 2: Dùng lệnh cắt dòng đầu tiên của file. Và lệnh để nối vào cuối cùng của một file khác
++ Bước 3: Gen lại báo cáo Jmeter
+
+
+-- Các dấu hiệu để biết máy của chúng ta không đủ để đổ tải
+1. Check biểu đồ Actice thread overtime 
+2. Có rất nhiều log lỗi trả ra. Dạng socket close, Connection close , và đặc điểm của các loại này là Response time cực bé (vài ms). -> Máy chúng ta đã bị fullport khiến request không được gửi ra ngoài
+
+
+
+Bài tập về nhà: Mọi người lên công ty nhờ máy đồng nghiệp cấu hình thêm
+Đọc thêm về mục : Các lỗi thường gặp, Mẹo hữu ích
+
