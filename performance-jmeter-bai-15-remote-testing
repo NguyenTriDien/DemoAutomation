@@ -28,9 +28,9 @@ Thì để giải quyết được vấn đề đảm bảo hiệu năng của m
 --> Scale theo chiều ngang (Horizontal Scaling)
 
 --> Thì mỗi cách nó đều có cái ưu và nhược điểm riêng đúng không. Tùy vào bối cảnh, hoàn cảnh thì chúng ta sẽ lựa chọn cách tối ưu nhất ha. Thì buổi ngày hôm nay chúng ta sẽ tìm hiểu 
-Cách 2. Để xem cách mà Jmeter nó làm để có thể kết hợp nhiều máy tính lại để tăng sức mạnh ha.
+Cách 2. Để xem cách mà Jmeter nó làm để có thể kết hợp nhiều máy tính lại để tăng sức mạnh như thế nào.
 
-Quay lại lí thuyết trên DOCS.
+Quay lại lí thuyết trên DOCS. Thì trên đây là lý thuyết cách nó hoạt động
 -------
 
 -- Bản chất của việc chạy Test này là như thế nào. 
@@ -38,12 +38,15 @@ Quay lại lí thuyết trên DOCS.
 + Khi chạy báo cáo Jmeter -> report.jtl -> htmlreport
 + report.jtl (csv) -> Chỉnh sửa theo í mình -> Gen ngược lại report
 
+
 Thì trong mô hình Master slave này nó work như nào
+
+
 + Chúng ta có TestPlan.jmx
+Master (TestPlan.jmx) 
 
-
-Master (TestPlan.jmx)  + Slave 1(Jmeter-server)
-			     + Slave 2(jmeter-server)
++ Slave 1(Jmeter-server)
++ Slave 2(jmeter-server)
 
 Thì bản chất cách nó hoạt động như sau. Thì nó mang cái file TestPlan.jmx sang bên các máy slave để chạy. Và gửi lại kết quả cho Master. Để dễ hiểu hơn thì mô hình của nó trông giống thế này
 
