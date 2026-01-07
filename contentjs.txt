@@ -1,0 +1,124 @@
+(() => {
+    "use strict";
+    // Lọc dữ liệu và đổ vào bảng báo cáo
+    const e = function (e) {
+        let currentUrl = window.location.href;
+        let n = null;
+        let o = null;
+        const h = document.getElementById("myframe");
+        if (h === null) {
+            n = document.getElementById("statisticsTable"), o = document.getElementById("pt-data");
+        } else {
+            n = h.contentWindow.document.getElementById("statisticsTable"), o = h.contentWindow.document.getElementById("pt-data");
+        }
+        if (n) {
+            for (let t = 3; t < n.rows.length; t++) {
+                let l = n.rows[t];
+                let content = l.cells[0].textContent;
+                if (e.trim().toLowerCase() === "all" || content.includes(e.trim())) {
+                    let t = o.insertRow(-1), n = t.insertCell(0), s = t.insertCell(1), c = t.insertCell(2),
+                        r = t.insertCell(3), a = t.insertCell(4), y = t.insertCell(5), u = t.insertCell(6),
+                        i = t.insertCell(7);
+                    if (currentUrl.includes("10.101.11.139")) {
+                        n.innerHTML = content;
+                        s.innerHTML = l.cells[8].textContent;
+                        c.innerHTML = l.cells[3].textContent;
+                        r.innerHTML = l.cells[10].textContent;
+                        t.style.background = "#03b466";
+                        (parseFloat(c.innerHTML) > .62 || parseFloat(s.innerHTML) > 5e3) && (t.style.color = "red", t.style.background = "coral");
+                    } else {
+                        n.innerHTML = content;
+                        s.innerHTML = l.cells[11].textContent;
+                        c.innerHTML = l.cells[1].textContent;
+                        r.innerHTML = (parseFloat(l.cells[4].textContent) / 1000).toFixed(3);
+                        a.innerHTML = (parseFloat(l.cells[9].textContent) / 1000).toFixed(3);
+                        y.innerHTML = (parseFloat(l.cells[10].textContent) / 1000).toFixed(3);
+                        u.innerHTML = l.cells[3].textContent;
+                        i.innerHTML = l.cells[8].textContent;
+                        t.style.background = "#03b466";
+                        (parseFloat(u.innerHTML) > .99 || parseFloat(s.innerHTML) > 5e3) && (t.style.color = "red", t.style.background = "coral");
+                        let uValue = parseFloat(u.innerHTML);
+                        if (!isNaN(uValue)) {
+                            let iValue = (100 - uValue).toFixed(2);
+                            i.innerHTML = iValue + "%";
+                        } else {
+                            i.innerHTML = "N/A%";
+                        }
+                    }
+                }
+            }
+        } else {
+            console.log("Cannot get element");
+        }
+    };
+
+    // Xuất bảng báo cáo dạng Excel (XML Spreadsheet 2003) để Excel mở ổn định
+    const exportTableToExcel = () => {
+        const frame = document.getElementById("myframe");
+        const doc = frame === null ? document : frame.contentWindow.document;
+        const table = doc.getElementById("dientq-report");
+        if (!table) return;
+
+        // Thu thập dữ liệu bảng
+        const rows = Array.from(table.rows).map(row =>
+            Array.from(row.cells).map(cell =>
+                cell.innerText
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+            )
+        );
+
+        // Dạng XML Spreadsheet 2003 (Excel đọc ổn định, không cảnh báo định dạng)
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+  <Worksheet ss:Name="Report">
+    <Table>
+      ${rows
+          .map(
+              cells =>
+                  `<Row>${cells
+                      .map(value => `<Cell><Data ss:Type="String">${value}</Data></Cell>`)
+                      .join("")}</Row>`
+          )
+          .join("\n      ")}
+    </Table>
+  </Worksheet>
+</Workbook>`;
+
+        const blob = new Blob([xml], { type: "application/vnd.ms-excel" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "performance-report.xls"; // XML Spreadsheet 2003
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+    window.isTop || setTimeout(() => {
+        (function () {
+            let e = null;
+            const h = document.getElementById("myframe");
+            if (h === null) {
+                e = document.getElementById("generalInfos");
+            } else {
+                e = h.contentWindow.document.getElementById("generalInfos");
+            }
+            var t;
+            e.parentNode.insertBefore(((t = document.createElement("div")).innerHTML = ` <div class="col-lg-12"> <div class="panel panel-default"> <div class="panel-heading" style="text-align:center;"> <p class="dashboard-title">ANH TESTER PERFORMANCE REPORT</p> </div> <div class="panel-body"> <div style="text-align:right; margin-bottom:10px;"> <button id="pt-export-excel" class="btn btn-success btn-sm">Xuất Excel</button> </div> <table id="dientq-report" class="table table-bordered table-condensed" style="text-align:center;"> <thead> <tr> <th>Functions</th> <th>TPS</th> <th>Sample</th> <th>Trung bình(s)</th> <th>P95(s)</th> <th>P99(s)</th> <th>Tỷ lệ lỗi(%)</th> <th>Tỷ lệ thành công(%)</th> </tr> </thead> <tbody id='pt-data'> </tbody> </table> </div> </div> </div> `.trim(), t.firstChild), e);
+            const exportBtn = document.getElementById("pt-export-excel");
+            exportBtn && exportBtn.addEventListener("click", exportTableToExcel);
+        })();
+        chrome.storage.sync.get(["feautures"], (t => {
+            t.feautures && t.feautures.split(",").forEach((t => e(t)))
+        }));
+    }, 5000);
+    document.addEventListener("DOMContentLoaded", function () {
+    });
+})();
