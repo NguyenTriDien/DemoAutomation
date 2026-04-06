@@ -7,6 +7,8 @@ Không biết có bạn nào chưa cài đặt được JMeter không ạ. Ok tr
 -- Hướng dẫn cấu hình các thứ cần thiết
 
 1. Giới thiệu về JMeter
+Thị phần của Jmeter trong tool Performance Test vẫn còn rất lớn. Đứng đầu là Loadrunner -> Enterprice rất nhiều tiền nên ở Việt Nam mình ít công ty nào bỏ tiền sử dụng. Và bài toán các hệ thống ở Việt Nam thự sự chưa cần đến nó
+
 - Là một opensource được phát hành bởi Apache Software Foundation
 - JMeter được viết 100% bằng Java
 
