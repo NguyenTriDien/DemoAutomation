@@ -6,9 +6,6 @@ Automation → Excel, CSV → Dùng code để đọc ra và input vào test sce
 Với Performance Test cũng vậy. Nó cũng cần có data test — đây là điều không thể tránh khỏi.
 
 Chúng ta đang tìm hiểu về JMeter. Công cụ này được gọi là No-code thì không đúng, gọi là Low-code mới chuẩn.
-Cuộc đời một Engineer thì chúng ta sẽ cố gắng theo lộ trình:
-Full-code (Code miệt mài không ngừng nghỉ. Khi chán code thì vừa khóc vừa code) → Đi làm một thời gian rồi cố gắng giảm code xuống chút (Low-code → Ít code lại) → Manage → No-code.
-→ Đây là câu chuyện vui em chia sẻ với mọi người thôi ha → Quay trở lại bài hôm nay.
 
 Như tiêu đề buổi học có đề cập đến CSV. Chắc hẳn nhiều anh chị cũng biết nó là gì rồi. Mình cũng nên điểm qua chút lý thuyết về CSV ha.
 
