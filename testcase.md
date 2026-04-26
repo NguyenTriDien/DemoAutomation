@@ -2,7 +2,7 @@
 > **Phiên bản:** 2.0 – Merged & Enhanced  
 > **Ngày tạo:** 25/04/2026  
 > **Nguồn gộp:** `Testcase.csv` (team Dev) + `UAT_Customer_Feedback_TestCases` (feedback KH demo) + Bổ sung mới  
-> **Tổng cộng: 80 Test Cases | 12 Nhóm**
+> **Tổng cộng: 94 Test Cases | 12 Nhóm**
 
 ---
 
@@ -116,19 +116,38 @@
 
 ---
 
-## NHÓM 7: ƯU ĐÃI ĐƯỢC PHÉP ÁP DỤNG ĐỒNG THỜI (5 Cases) ← MỚI
+## NHÓM 7: ƯU ĐÃI ĐƯỢC PHÉP ÁP DỤNG ĐỒNG THỜI (9 Cases) ← MỞ RỘNG + SỬA SỐ LIỆU
+
+> [!IMPORTANT]
+> **Tổng hợp tất cả CTKM ô tô đang hiệu lực (T04.2026) và giá trị giảm:**
+>
+> | # | Tên CT | Mức giảm | Phạm vi | Nguồn |
+> |---|--------|---------|---------|-------|
+> | 1 | Voucher GTĐ | VF 3/Minio/EC Van: **-5tr** ∙ VF 5/Herio: **-7tr** ∙ VF 6/Limo/MPV 7: **-10tr** ∙ VF 7/VF 8: **-15tr** ∙ VF 9: **-20tr** | Đặt cọc 20-22/03 & 26-30/03/2026, xuất HĐ đến 30/06/2026 | Mục 1 CS T04 |
+> | 2 | Tiên phong MPV 7 | Tặng 2 năm BH hoặc quy đổi **-15.000.000 VNĐ** | Đặt cọc 20/01→28/02/2026, xuất HĐ đến 30/04/2026 | Mục 2 CS T04 |
+> | 3 | Thu Xăng Đổi Điện (ô tô) | **-3% MSRP** (có VAT) | Sở hữu xe xăng, 11/03→30/04/2026 | Mục 3 CS T04 |
+> | 4 | Mãnh liệt | VF 3→VF 7/MPV 7: **-6% MSRP** hoặc lãi suất **7%/năm** x 3 năm ∙ VF 8/VF 9: **-10% MSRP** hoặc **5%/năm** x 3 năm | 23/01→31/12/2026 | Mục 4 CS T04 |
+> | 5 | Mua xe 0 Đồng | Vay **100%** giá trị xe | 04/01→31/12/2026 | Mục 5 CS T04 |
+> | 6 | Giảm giá dòng xe | VF 3 Eco: **-3tr** ∙ VF 7 Plus (1+2 cầu): **-50tr** ∙ VF 8 Eco 2 cầu: **-50tr** ∙ VF 8 Eco 1 cầu: **-20tr** | Đến khi có TB mới | Mục 6 CS T04 |
+> | 7 | CS O2O (xe công vụ) | **-5%** trên giá sau KM | Từ 15/07/2025 | Mục 7 CS T04 |
+> | 8 | CA-QĐ | **-5% MSRP** (có VAT) | 04/02→31/12/2026 | Mục 8 CS T04 |
+> | 9 | Sạc miễn phí V-Green | 10 lần/tháng (EC Van/Minio: 20 lần) | Mua từ 10/02/2026 | CS V-Green |
 
 | TC ID | Tên Test Case | Input (Chat) | Expected Result (Hiển thị trên chat) | Priority | Status |
 |-------|--------------|-------------|--------------------------------------|----------|--------|
-| COMBO-01 | Voucher GTĐ + Mãnh liệt | "Tôi có voucher Giờ Trái Đất, áp cùng Mãnh liệt được không?" | Bot hiển thị: *"✅ Được! Voucher Giờ Trái Đất được áp dụng đồng thời với các ưu đãi bán lẻ, bao gồm Mãnh liệt. Ví dụ VF 7: Voucher **-15 triệu** + Mãnh liệt **-6% MSRP**."* (Trích Mục 1 CS T04) | **Critical** | — |
-| COMBO-02 | Mãnh liệt + Giảm giá dòng xe | "VF 7 Plus giảm 50 triệu lẫn Mãnh liệt 6%?" | Bot hiển thị: *"✅ Được! VF 7 Plus: ① Giảm trực tiếp **-50.000.000 VNĐ** ② Mãnh liệt **-6% MSRP** (hoặc hỗ trợ lãi suất 7%/năm). Hai ưu đãi áp dụng song song."* | **Critical** | — |
-| COMBO-03 | Mua xe 0 Đồng + Mãnh liệt lãi suất | "Mua xe 0 đồng VF 5 kết hợp Mãnh liệt hỗ trợ lãi suất được không?" | Bot hiển thị: *"✅ Được! Mua xe 0 đồng = vay 100% giá trị xe. Mãnh liệt hỗ trợ lãi suất = **7%/năm** cố định trong 3 năm đầu cho VF 5."* | High | — |
-| COMBO-04 | Giảm giá VIN 2024 + Sạc free | "Mua VF 8 VIN 2024 được giảm gì?" | Bot hiển thị: *"VF 8 VIN 2024: ① Giảm **-70 triệu** (Eco/S Lux) hoặc **-85 triệu** (Plus/Lux Plus). ② Sạc miễn phí V-Green 10 lần/tháng (nếu mua từ 10/02/2026). Hai ưu đãi áp dụng đồng thời."* | High | — |
-| COMBO-05 | Bảng tổng hợp combo VF 8 | "Liệt kê tất cả ưu đãi áp dụng đồng thời cho VF 8 mới" | Bot hiển thị bảng: *"① Mãnh liệt **-10% MSRP** ② Giảm dòng xe **-50tr** (Eco 2 cầu) / **-20tr** (Eco 1 cầu) ③ Voucher GTĐ **-15tr** (nếu đủ ĐK). → Tổng giảm tối đa: [số tiền]"* | **Critical** | — |
+| COMBO-01 | Voucher GTĐ + Mãnh liệt | "Tôi có voucher Giờ Trái Đất, áp cùng Mãnh liệt được không?" | Bot hiển thị: *"✅ Được! Voucher GTĐ được áp dụng đồng thời với các ưu đãi bán lẻ (bao gồm Mãnh liệt). Trích Mục 1 CS T04: 'Voucher được áp dụng đồng thời với các ưu đãi bán lẻ'. Giá trị Voucher theo dòng xe: VF 3/Minio/EC Van: **-5.000.000** ∙ VF 5/Herio: **-7.000.000** ∙ VF 6/Limo/MPV 7: **-10.000.000** ∙ VF 7/VF 8: **-15.000.000** ∙ VF 9: **-20.000.000**. ⚠️ Lưu ý: Voucher GTĐ KHÔNG áp dụng cùng ưu đãi Công An Quân Đội."* | **Critical** | — |
+| COMBO-02 | Mãnh liệt + Giảm giá dòng xe (VF 7 Plus) | "VF 7 Plus giảm 50 triệu lẫn Mãnh liệt 6%?" | Bot hiển thị: *"✅ Được! VF 7 Plus (889.000.000 VNĐ) được hưởng ĐỒNG THỜI: ① Giảm giá dòng xe (Mục 6 CS T04): **-50.000.000 VNĐ** (áp dụng Plus 1 cầu + 2 cầu + Nâng cấp). ② Mãnh liệt (Mục 4 CS T04) – chọn 1: (A) Giảm giá **-6% MSRP** = -53.340.000 VNĐ HOẶC (B) Hỗ trợ lãi suất **7%/năm** cố định 3 năm đầu. → Nếu chọn (A): Tổng giảm = -50tr + (-53,34tr) = **-103.340.000 VNĐ**."* | **Critical** | — |
+| COMBO-03 | Mua xe 0 Đồng + Mãnh liệt lãi suất | "Mua xe 0 đồng VF 5 kết hợp Mãnh liệt hỗ trợ lãi suất được không?" | Bot hiển thị: *"✅ Được! ① Mua xe 0 Đồng (Mục 5 CS T04): Vay **100%** giá trị xe VF 5 (529.000.000 VNĐ). Áp dụng TẤT CẢ dòng xe, hiệu lực 04/01→31/12/2026. ② Mãnh liệt – Hỗ trợ lãi suất (Mục 4 CS T04): VF 5 được lãi suất cố định **7%/năm** trong 3 năm đầu khi vay qua ngân hàng đối tác. → Hai CT bổ trợ nhau: Vay 100% + lãi suất ưu đãi."* | High | — |
+| COMBO-04 | Giảm giá VIN 2024 + Sạc free + Mãnh liệt | "Mua VF 8 VIN 2024 được giảm gì?" | Bot hiển thị: *"VF 8 VIN 2024 được hưởng ĐỒNG THỜI: ① Giảm giá theo VIN 2024 (CS xe dừng SX): Eco/S Lux **-70.000.000 VNĐ** ∙ Plus/Lux Plus **-85.000.000 VNĐ** (áp dụng từ 14/07/2025). ② Mãnh liệt (Mục 4): **-10% MSRP** HOẶC lãi suất **5%/năm** x 3 năm. ③ Sạc miễn phí V-Green: **10 lần/tháng** (nếu mua từ 10/02/2026). → Tổng giảm VF 8 Eco VIN 2024 nếu chọn Mãnh liệt giảm giá: -70tr + (-101,9tr) = **-171.900.000 VNĐ** + sạc free."* | **Critical** | — |
+| COMBO-05 | Bảng tổng hợp TẤT CẢ combo VF 8 mới | "Liệt kê tất cả ưu đãi áp dụng đồng thời cho VF 8 mới" | Bot hiển thị bảng ĐẦY ĐỦ: *"Ưu đãi cho VF 8 MỚI (VIN 2026): ① Mãnh liệt: **-10% MSRP** (Eco: -101,9tr / Plus: -119,9tr) HOẶC lãi suất **5%/năm** x 3 năm. ② Giảm giá dòng xe: Eco 2 cầu **-50.000.000** ∙ Eco 1 cầu **-20.000.000**. ③ Voucher GTĐ (nếu đủ ĐK đặt cọc): **-15.000.000**. ④ Thu Xăng Đổi Điện (nếu có xe xăng): **-3% MSRP** (Eco: -30,57tr / Plus: -35,97tr). ⑤ Sạc miễn phí V-Green: **10 lần/tháng**. ⑥ Mua xe 0 Đồng: Vay **100%** giá trị xe. → ⚠️ CT ④ Thu Xăng Đổi Điện KHÔNG áp dụng cùng CBNV (-2%)."* | **Critical** | — |
+| COMBO-06 | Tiên phong VF MPV 7 + Mãnh liệt + Voucher GTĐ | "Mua VF MPV 7 được giảm gì?" | Bot hiển thị: *"VF MPV 7 (819.000.000 VNĐ) được hưởng ĐỒNG THỜI: ① Tiên phong MPV 7 (Mục 2 CS T04): Tặng 2 năm BH hoặc quy đổi **-15.000.000 VNĐ** (đặt cọc 20/01→28/02/2026, xuất HĐ đến 30/04/2026). ② Mãnh liệt (Mục 4): **-6% MSRP** = **-49.140.000 VNĐ** HOẶC lãi suất **7%/năm** x 3 năm. ③ Voucher GTĐ (nếu đủ ĐK): **-10.000.000**. ④ Sạc miễn phí: **10 lần/tháng**. → Tổng nếu chọn quy đổi + Mãnh liệt giảm giá + Voucher: -15tr + (-49,14tr) + (-10tr) = **-74.140.000 VNĐ**."* | **Critical** | — |
+| COMBO-07 | Combo VF 3 Eco (dòng xe nhỏ) | "VF 3 Eco đang được giảm gì?" | Bot hiển thị: *"VF 3 Eco (302.000.000 VNĐ) được hưởng ĐỒNG THỜI: ① Giảm giá dòng xe (Mục 6): **-3.000.000 VNĐ** (từ 04/12/2025). ② Mãnh liệt (Mục 4): **-6% MSRP** = **-18.120.000 VNĐ** HOẶC lãi suất **7%/năm** x 3 năm. ③ Voucher GTĐ (nếu đủ ĐK): **-5.000.000**. ④ Thu Xăng Đổi Điện (nếu có xe xăng): **-3% MSRP** = **-9.060.000 VNĐ**. → Tổng tối đa (nếu đủ ĐK): -3tr + (-18,12tr) + (-5tr) + (-9,06tr) = **-35.180.000 VNĐ**."* | High | — |
+| COMBO-08 | Ma trận tổng hợp ĐẦY ĐỦ theo dòng xe | "Bảng tổng hợp ưu đãi cho tất cả dòng xe ô tô?" | Bot hiển thị MA TRẬN: *"Bảng ưu đãi theo dòng xe (T04.2026): ▸ VF 3 Eco: Giảm dòng xe **-3tr** + Mãnh liệt **-6%** + Voucher **-5tr** + Thu Xăng ĐĐ **-3%** ▸ VF 5: Mãnh liệt **-6%** + Voucher **-7tr** + Thu Xăng ĐĐ **-3%** ▸ VF 6: Mãnh liệt **-6%** + Voucher **-10tr** + Thu Xăng ĐĐ **-3%** ▸ VF 7 Plus: Giảm dòng xe **-50tr** + Mãnh liệt **-6%** + Voucher **-15tr** + Thu Xăng ĐĐ **-3%** ▸ VF 8 Eco 2 cầu: Giảm dòng xe **-50tr** + Mãnh liệt **-10%** + Voucher **-15tr** + Thu Xăng ĐĐ **-3%** ▸ VF 8 Eco 1 cầu: Giảm dòng xe **-20tr** + Mãnh liệt **-10%** + Voucher **-15tr** + Thu Xăng ĐĐ **-3%** ▸ VF 9: Mãnh liệt **-10%** + Voucher **-20tr** + Thu Xăng ĐĐ **-3%** ▸ MPV 7: Tiên phong **-15tr** + Mãnh liệt **-6%** + Voucher **-10tr** + Thu Xăng ĐĐ **-3%**. Tất cả + Sạc miễn phí 10 lần/tháng + Mua xe 0 Đồng (vay 100%)."* | **Critical** | — |
+| COMBO-09 | Liệt kê TẤT CẢ CTKM hiện tại (tổng quát) | "Các chương trình khuyến mãi hiện tại của VinFast?" | Bot hiển thị ĐẦY ĐỦ, phân tách rõ ô tô và xe máy: *"**🚗 CTKM Ô TÔ ĐIỆN (T04.2026):** ① **Mãnh liệt vì Tương lai Xanh** (Mục 4 CS T04): VF 3/5/6/7/MPV 7/EC Van/Minio/Limo/Herio: **-6% MSRP** hoặc lãi suất **7%/năm** x 3 năm ∙ VF 8/VF 9: **-10% MSRP** hoặc lãi suất **5%/năm** x 3 năm. HĐ: 23/01→31/12/2026. ② **Voucher Giờ Trái Đất** (Mục 1): VF 3/Minio/EC Van: **-5tr** ∙ VF 5/Herio: **-7tr** ∙ VF 6/Limo/MPV 7: **-10tr** ∙ VF 7/VF 8: **-15tr** ∙ VF 9: **-20tr**. ĐK: Đặt cọc 20-22/03 & 26-30/03/2026, xuất HĐ đến 30/06/2026. ⚠️ Không áp dụng cùng CA-QĐ. ③ **Thu Xăng Đổi Điện ô tô** (Mục 3): **-3% MSRP** (có VAT). ĐK: KH sở hữu xe xăng (mọi hãng, dưới 9 chỗ). HĐ: 11/03→30/04/2026. ⚠️ CBNV chỉ chọn 1: Thu Xăng ĐĐ hoặc CBNV -2%. ④ **Giảm giá dòng xe** (Mục 6): VF 3 Eco: **-3.000.000** ∙ VF 7 Plus (1+2 cầu + Nâng cấp): **-50.000.000** ∙ VF 8 Eco 2 cầu: **-50.000.000** ∙ VF 8 Eco 1 cầu: **-20.000.000**. ⑤ **Mua xe 0 Đồng** (Mục 5): Vay **100%** giá trị xe, tất cả dòng. HĐ: 04/01→31/12/2026. ⑥ **Tiên phong VF MPV 7** (Mục 2): Tặng 2 năm BH hoặc quy đổi **-15.000.000**. ĐK: Đặt cọc 20/01→28/02/2026, xuất HĐ đến 30/04/2026. ⑦ **CS O2O xe công vụ** (Mục 7): **-5%** trên giá sau KM. Kênh O2O từ 15/07/2025, Đại lý từ 13/08/2025. ⑧ **CS Công an – Quân đội** (Mục 8): **-5% MSRP** (có VAT). HĐ: 04/02→31/12/2026. ⚠️ Không cùng VinClub, CBNV, Đại lý, Bán buôn, Voucher GTĐ. ⑨ **Sạc miễn phí V-Green**: **10 lần/tháng** (EC Van/Minio: 20 lần). Mua từ 10/02/2026. --- **🏍️ CTKM XE MÁY ĐIỆN:** ① **Thu Xăng Đổi Điện XMĐ** (CS 03/03/2026): **-5% giá bán lẻ**. Giá trị theo từng dòng xe: Evo kèm pin: **-1.280.000** ∙ Evo không pin: **-999.500** ∙ Feliz II kèm pin: **-1.525.000** ∙ Feliz II không pin: **-1.245.000** ∙ Viper kèm pin: **-2.275.000** ∙ Viper không pin: **-1.995.000** ∙ Amio: **-695.000** ∙ Zgoo: **-795.000** ∙ Flazz: **-845.000** ∙ Evo Grand: **-1.140.000** ∙ Evo Grand Lite: **-945.000** ∙ Feliz 2025: **-1.345.000** ∙ Vero X: **-1.745.000** ∙ Feliz Lite: **-1.295.000** ∙ Motio: **-600.000** ∙ Evo 200 Lite: **-1.100.000** ∙ Evo Lite Neo: **-720.000** ∙ Evo 200: **-1.100.000** ∙ Evo Neo: **-890.000** ∙ Feliz Neo: **-1.120.000** ∙ Feliz S: **-1.485.000** ∙ Klara S2: **-1.825.000** ∙ Klara Neo: **-1.440.000** ∙ Vento S: **-2.460.000** ∙ Vento Neo: **-1.600.000** ∙ Theon S: **-2.845.000** ∙ Evo Lite kèm pin: **-1.130.000** ∙ Evo Lite không pin: **-850.000**. ⚠️ ĐỘC LẬP – KHÔNG áp dụng đồng thời với CTKM khác. HĐ: 11/03→30/04/2026. ② **Đổi pin miễn phí**: **20 lần/tháng**. Áp dụng: Evo, Feliz II, Viper (SX từ 2026). ③ **Sạc miễn phí tại trạm V-Green**: Tối đa **2 lần/ngày**. Áp dụng tất cả dòng xe máy điện VinFast."* | **Critical** | — |
 
 ---
 
-## NHÓM 8: ƯU ĐÃI LOẠI TRỪ – KHÔNG ÁP DỤNG ĐỒNG THỜI (6 Cases) ← Gộp CSV + MỚI
+## NHÓM 8: ƯU ĐÃI LOẠI TRỪ – KHÔNG ÁP DỤNG ĐỒNG THỜI (7 Cases) ← Gộp CSV + MỞ RỘNG
 
 | TC ID | Tên Test Case | Input (Chat) | Expected Result (Hiển thị trên chat) | Priority | Status |
 |-------|--------------|-------------|--------------------------------------|----------|--------|
@@ -138,6 +157,7 @@
 | EXCL-04 | Thu Xăng Đổi Điện XMĐ + KM khác | "Đổi xe xăng sang Evo, được giảm 5% + thêm KM gì nữa?" | Bot hiển thị: *"❌ Không! Thu Xăng Đổi Điện XMĐ ghi rõ: 'KH không được áp dụng CT này đồng thời với CTKM khác'. Giảm 5% là ưu đãi duy nhất được hưởng."* (Trích file Thu Xăng Đổi Điện) | **Critical** | — |
 | EXCL-05 | Mãnh liệt: chọn cả 2 option | "VF 9 tôi muốn vừa giảm 10% vừa hỗ trợ lãi suất 5%/năm" | Bot hiển thị: *"❌ CT Mãnh liệt chỉ cho chọn 1: (A) Giảm giá **-10% MSRP** HOẶC (B) Hỗ trợ lãi suất **5%/năm** trong 3 năm. Bạn muốn chọn phương án nào?"* | High | — |
 | EXCL-06 | Hạng Kim Cương + Bộ đội (từ CSV TC6.2) | "Tôi muốn giảm giá Hạng kim cương và tôi là bộ đội thì tổng giảm giá cộng lại bằng bao nhiêu" | Bot hiển thị: *"❌ Không cho phép kết hợp! Ưu đãi CA-QĐ (-5% MSRP) không áp dụng đồng thời với VinClub (hạng Kim Cương). Bạn chỉ được chọn 1 ưu đãi có lợi nhất."* | **Critical** | ~~FAILED~~ |
+| EXCL-07 | Liệt kê TẤT CẢ CTKM KHÔNG được áp dụng đồng thời (tổng quát) | "Các ưu đãi nào không áp dụng đồng thời?" | Bot hiển thị DANH SÁCH ĐẦY ĐỦ tất cả cặp loại trừ: *"**📋 BẢNG TỔNG HỢP CÁC CTKM KHÔNG ÁP DỤNG ĐỒNG THỜI:** --- **❌ Nhóm 1: CS Công an – Quân đội (-5% MSRP)** KHÔNG áp dụng cùng: • VinClub (mọi hạng: Bạc/Vàng/Bạch Kim/Kim Cương) • CBNV Vingroup (-2%) • CS Đại lý phân phối • CS Bán buôn • Voucher Giờ Trái Đất. (Trích Mục 8 CS T04.2026) --- **❌ Nhóm 2: Voucher Giờ Trái Đất** KHÔNG áp dụng cùng: • CS Công an – Quân đội (-5%). (Trích Mục 1 CS T04.2026: 'Không áp dụng cùng ưu đãi Công An Quân đội') --- **❌ Nhóm 3: CBNV Vingroup** khi có xe xăng, chỉ chọn 1 trong 2: • (A) Thu Xăng Đổi Điện ô tô: **-3% MSRP** • (B) CBNV hỗ trợ: **-2%/xe**. (Trích Mục 3 CS T04.2026) --- **❌ Nhóm 4: CT Mãnh liệt** chỉ chọn 1 trong 2 hình thức: • (A) Giảm giá: **-6% MSRP** (VF 3→7, MPV 7) / **-10% MSRP** (VF 8, 9) • (B) Hỗ trợ lãi suất: **7%/năm** (VF 3→7) / **5%/năm** (VF 8, 9) x 3 năm đầu. KHÔNG được chọn cả (A) và (B). (Trích Mục 4 CS T04.2026) --- **❌ Nhóm 5: Tiên phong VF MPV 7** Nếu KH đồng thời thỏa mãn ĐK đặt cọc tiên phong (20/01→28/02/2026) VÀ xuất HĐ trước 30/04/2026 → **Không cộng dồn**, chỉ hưởng 1 lần (tặng 2 năm BH hoặc quy đổi **-15.000.000 VNĐ**). (Trích Mục 2 CS T04.2026) --- **❌ Nhóm 6: Thu Xăng Đổi Điện XE MÁY (-5%)** KHÔNG áp dụng đồng thời với BẤT KỲ CTKM nào khác. Đây là CT ĐỘC LẬP HOÀN TOÀN – KH chỉ được hưởng DUY NHẤT giảm 5%. (Trích CS Thu Xăng Đổi Điện XMĐ 03/03/2026: 'KH không được áp dụng CT này đồng thời với CTKM khác') --- **✅ CÁC CTKM ĐƯỢC ÁP DỤNG ĐỒNG THỜI (không loại trừ):** Mãnh liệt + Giảm giá dòng xe + Voucher GTĐ + Thu Xăng ĐĐ ô tô + Mua xe 0 Đồng + Sạc miễn phí + Tiên phong MPV 7 → TẤT CẢ được áp song song (trừ các cặp loại trừ nêu trên)."* | **Critical** | — |
 
 ---
 
@@ -241,13 +261,13 @@
 | 4 | Constraints | 5 | 1 | 4 | 0 | CSV gốc |
 | 5 | Error Handling | 4 | 1 | 3 | 0 | CSV gốc |
 | 6 | Chính sách O2O | 5 | 3 | 2 | 0 | **MỚI** |
-| 7 | Ưu đãi đồng thời | 5 | 3 | 2 | 0 | **MỚI** |
-| 8 | Ưu đãi loại trừ | 6 | 5 | 1 | 0 | CSV + MỚI |
+| 7 | **Ưu đãi đồng thời** | **9** | **7** | **2** | **0** | **MỞ RỘNG** |
+| 8 | **Ưu đãi loại trừ** | **7** | **6** | **1** | **0** | **MỞ RỘNG** |
 | 9 | **Xe ngừng SX / VIN cũ / Không tồn tại** | **14** | **8** | **6** | **0** | **MỞ RỘNG** |
 | 10 | CTKM không có / Hết hạn | 6 | 3 | 3 | 0 | CSV + MỚI |
 | 11 | Phân loại Ô tô vs Xe máy | 5 | 4 | 1 | 0 | **MỚI** |
 | 12 | UX & Bảo mật | 10 | 0 | 6 | 4 | **MỚI** (Feedback KH) |
-| | **TỔNG** | **89** | **30** | **54** | **5** | |
+| | **TỔNG** | **94** | **35** | **54** | **5** | |
 
 ---
 
